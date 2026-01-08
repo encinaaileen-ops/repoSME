@@ -1,0 +1,510 @@
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Header = "Clients";
+}
+
+<div class="tabs-container">
+    <ul class="nav nav-tabs">
+        <li class="active"><a aria-expanded="true" data-toggle="tab" href="#tab-search">Search</a></li>
+        <li><a aria-expanded="false" data-toggle="tab" href="#tab-key-statistics">Key Statistics</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab-search" class="tab-pane active">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h5 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapsePort" class="collapsed" aria-expanded="false"><i class="fa fa-search"></i>&nbsp;Search</a>
+                                        </h5>
+                                    </div>
+
+                                    <div id="collapsePort" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                        <div class="panel-body">
+                                            <div class="form-horizontal">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4 control-label">Client Name</label>
+                                                            <div class="col-lg-8">
+                                                                <input placeholder="Client Name" class="form-control" id="ClientName" style="width: 100%">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4 control-label">Include Subgroups</label>
+                                                            <div class="col-lg-8">
+                                                                <input type="checkbox" class="checkbox" id="IncludeSubgroups">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4 control-label">Country</label>
+                                                            <div class="col-lg-8">
+                                                                <input id="CountryId" style="width:100%" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <div class="col-lg-offset-4 col-lg-8">
+                                                                <button class="btn btn-primary" type="button" onclick="searchClients()">Search</button>
+                                                                <button style="width: 100px" class="btn btn-primary" type="button" onclick="resetFilter()">Reset Filter</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="Clients" style="margin-bottom: 10px"></div>
+                            <a href="@Url.Action("Add", "Client")" type="button" class="btn btn-w-m btn-primary"><i class="fa fa-plus"></i>&nbsp;Add Client</a>
+                            <button id="openExportDialogBtn" class="btn btn-w-m btn-primary">
+                                <i class="fa fa-file-excel-o"></i>
+                                Export to Excel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-key-statistics" class="tab-pane">
+            <div class="panel-body">
+                <div class="col-lg-6">
+                    <h3>
+                        <i class="fa fa-arrow-circle-up color-green"></i>
+                        <i class="fa fa-arrow-circle-down color-red"></i>&nbsp;
+                        <b>Key Statistics</b>
+                    </h3>
+                    <table class="table table-striped table-bordered" id="quickStat" style="display:none;">
+                        <tbody>
+                            <tr>
+                                <td>Clients</td>
+                                <td id="statClientsCount"></td>
+                            </tr>
+                            <tr>
+                                <td>Policies</td>
+                                <td id="statPoliciesCount"></td>
+                            </tr>
+                            <tr>
+                                <td>Total Premium</td>
+                                <td id="statTotalPremium"></td>
+                            </tr>
+                            <tr>
+                                <td>Total Remuneration</td>
+                                <td id="statTotalRemuneration"></td>
+                            </tr>
+                            <tr>
+                                <td>RPM</td>
+                                <td id="statRPM"></td>
+                            </tr>
+                            <tr>
+                                <td>Total Members</td>
+                                <td id="statTotalMembers"></td>
+                            </tr>
+                            <tr>
+                                <td>Pending Census Transactions</td>
+                                <td id="statPendingCensus"></td>
+                            </tr>
+                            <tr>
+                                <td>Pending Claims</td>
+                                <td id="statPendingClaims"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <img id="statsLoader" src="~/Content/Images/loader/ajax-loader.gif" alt="loading" class="center-block" />
+                </div>
+                <div class="col-lg-6">
+                    <h3><b>Clients by Industry</b></h3>
+                    <div id="TopIndustries" style="height: 350px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="clientExportModal" tabindex="-1" role="dialog" aria-labelledby="modal-users" aria-hidden="true">
+    <div class="modal-dialog" style="width: 20%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Select Date</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="display:flex;">
+                    <div class="col" style="padding-top: 7px;">
+                        <label>Date</label>
+                    </div>
+                    <div class="col-lg-8">
+                        <input id="datepickerExport" style="width: 100%" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="downloadMembershipBtn">Ok</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script type="text/javascript">
+    var countriesData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Countries));
+    var statisticsLoaded = false;
+
+    function searchClients() {
+        var grid = $("#Clients").data("kendoGrid");
+        if (grid) {
+            grid.dataSource.page(1);
+        }
+    }
+
+    function additionalClientParams() {
+        return {
+            name: $("#ClientName").val(),
+            countryId: $("#CountryId").data("kendoComboBox").value(),
+            isIncludeSubgroups: $("#IncludeSubgroups")[0].checked
+        }
+    }
+
+    function resetFilter() {
+        $("#ClientName").val("");
+        $("#CountryId").data("kendoComboBox").value("");
+        $("#IncludeSubgroups")[0].checked = false;
+
+        searchClients();
+    }
+
+    function loadStatistics() {
+        if (statisticsLoaded) return;
+
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "@Url.Action("GetClientsQuickStat", "Client")",
+            success: function(data) {
+                if (data.Success) {
+                    var st = data.ClientsStat;
+                    $("#statClientsCount").text(st.ClientsCount);
+                    $("#statPoliciesCount").text(st.PoliciesCount);
+                    $("#statTotalPremium").text(st.TotalPremiumString);
+                    $("#statTotalRemuneration").text(st.TotalRemunerationString);
+                    $("#statRPM").text(st.RPMString);
+                    $("#statTotalMembers").text(st.TotalMembersString);
+                    $("#statPendingCensus").text(st.PendingCensusTransactionsCount);
+                    $("#statPendingClaims").text(st.PendingClaimsCount);
+                    $("#quickStat").show();
+                    $("#statsLoader").hide();
+                    statisticsLoaded = true;
+                }
+            },
+            error: function(data) {
+                $("#statsLoader").hide();
+            },
+        });
+
+        // Load industry chart
+        var chart = $("#TopIndustries").data("kendoChart");
+        if (chart && chart.dataSource.data().length == 0) {
+            chart.dataSource.read();
+        }
+    }
+
+    $(document).ready(function () {
+
+        // Initialize Country ComboBox
+        $("#CountryId").kendoComboBox({
+            dataTextField: "Name",
+            dataValueField: "Id",
+            filter: "contains",
+            dataSource: countriesData,
+            placeholder: "Select country..."
+        });
+
+        $("input[name='CountryId_input']").attr('autocomplete', 'new-password');
+
+        // Initialize Date Picker for Export
+        $("#datepickerExport").kendoDatePicker({
+            value: new Date(),
+            format: "dd/MM/yyyy"
+        });
+
+        // Initialize Clients Grid
+        $("#Clients").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "@Url.Action("SearchClientsAsync", "Client")",
+                        type: "POST",
+                        dataType: "json",
+                        data: additionalClientParams
+                    }
+                },
+                schema: {
+                    data: "Data",
+                    total: "Total",
+                    model: {
+                        fields: {
+                            ClientId: { type: "number" },
+                            Name: { type: "string" },
+                            QueryString: { type: "string" },
+                            ClientType: { type: "string" },
+                            TotalMembersCount: { type: "number" },
+                            ActivePrincipalsCount: { type: "number" },
+                            ActiveDependantsCount: { type: "number" },
+                            PendingAdditionMembersCount: { type: "number" },
+                            PoliciesCount: { type: "number" },
+                            IsLost: { type: "boolean" }
+                        }
+                    }
+                },
+                pageSize: 10,
+                serverPaging: true,
+                serverFiltering: true,
+                serverSorting: true
+            },
+            scrollable: { height: 456 },
+            pageable: true,
+            columns: [
+                {
+                    field: "Name",
+                    title: "Client Name",
+                    width: 340,
+                    template: "<a href='@Url.Action("Details", "Client")#=QueryString#'>#=Name#</a>",
+                    headerAttributes: { style: "min-width:200px;" }
+                },
+                {
+                    field: "ClientType",
+                    title: "Type",
+                    width: 100
+                },
+                {
+                    field: "TotalMembersCount",
+                    title: "Total Members",
+                    width: 150,
+                    headerAttributes: { style: "white-space: normal;" }
+                },
+                {
+                    field: "ActivePrincipalsCount",
+                    title: "Active Principal Members",
+                    width: 150,
+                    headerAttributes: { style: "white-space: normal;" }
+                },
+                {
+                    field: "ActiveDependantsCount",
+                    title: "Active Dependants Members",
+                    width: 150,
+                    headerAttributes: { style: "white-space: normal;" }
+                },
+                {
+                    field: "PendingAdditionMembersCount",
+                    title: "Pending Addition Members",
+                    width: 150,
+                    headerAttributes: { style: "white-space: normal;" }
+                },
+                {
+                    field: "PoliciesCount",
+                    title: "# Policies",
+                    width: 90
+                },
+                {
+                    field: "IsLost",
+                    title: "Status",
+                    width: 70,
+                    template: "# if(!IsLost) { # <i class='fa fa-check-circle-o color-green'></i> # } else { # <i class='fa fa-times color-red'></i> # } #"
+                }
+            ]
+        });
+
+        // Initialize Industry Donut Chart
+        $("#TopIndustries").kendoChart({
+            theme: "fiori",
+            legend: {
+                position: "right"
+            },
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "@Url.Action("GetIndustriesDemographics", "Client")",
+                        type: "POST",
+                        dataType: "json"
+                    }
+                }
+            },
+            seriesDefaults: {
+                type: "donut"
+            },
+            series: [{
+                field: "value",
+                categoryField: "category"
+            }],
+            tooltip: {
+                visible: true,
+                template: "#= category # - #= kendo.format('{0:P}', percentage) #"
+            }
+        });
+
+        // Tab change handler - load statistics on first view
+        $("a[href='#tab-key-statistics']").on('show.bs.tab', function (e) {
+            loadStatistics();
+        });
+
+        // Export button handler
+        $('#openExportDialogBtn').on('click', function (e) {
+            $('#clientExportModal').modal('show');
+        });
+
+        $('#downloadMembershipBtn').on('click', function (e) {
+            $('#clientExportModal').modal('hide');
+            var params = additionalClientParams();
+            params.selectedDate = $("#datepickerExport").data("kendoDatePicker").value();
+
+            $.ajax({
+                url: '@Url.Action("ExportClients", "Client")',
+                type: "POST",
+                data: JSON.stringify(params),
+                contentType: 'application/json; charset=utf-8',
+                processData: false,
+                success: function (data) {
+                    window.location.href = data;
+                },
+            });
+        });
+    });
+
+</script>
+}
+
+<style>
+    /* Color classes for status icons */
+    .color-green {
+        color: #1ab394 !important;
+    }
+    .color-red {
+        color: #ed5565 !important;
+    }
+
+    .tabs-container .tab-content {
+        padding: 0;
+    }
+
+    .tabs-container .tab-pane .panel-body {
+        padding: 15px;
+    }
+
+    .ibox {
+        margin-bottom: 0;
+    }
+
+    /* Grid styling to match reference */
+    #Clients.k-grid {
+        border: 1px solid #e5e5e5;
+    }
+
+    #Clients .k-grid-header {
+        background-color: #f5f5f6 !important;
+        border-bottom: 1px solid #ddd;
+    }
+
+    #Clients .k-grid-header-wrap {
+        background-color: #f5f5f6 !important;
+    }
+
+    #Clients .k-grid-header th.k-header {
+        background-color: #f5f5f6 !important;
+        border-color: #ddd;
+        font-weight: normal;
+        color: #676a6c;
+        padding: 15px 12px;
+        vertical-align: middle;
+        line-height: 1.4;
+        white-space: normal !important;
+        height: auto;
+    }
+
+    #Clients .k-grid-header th.k-header .k-link {
+        color: #676a6c;
+        white-space: normal !important;
+        overflow: visible;
+        text-overflow: clip;
+        line-height: 1.4;
+    }
+
+    #Clients .k-grid-content tr,
+    #Clients .k-grid-content tr.k-alt {
+        background-color: #fff !important;
+    }
+
+    #Clients .k-grid-content tr:hover,
+    #Clients .k-grid-content tr.k-alt:hover {
+        background-color: #f5f5f5 !important;
+    }
+
+    #Clients .k-grid-content td {
+        border-color: #e5e5e5;
+        padding: 12px 12px;
+        vertical-align: middle;
+        line-height: 1.8;
+    }
+
+    /* Hide the mobile k-current-page element */
+    #Clients .k-pager-wrap .k-pager-numbers li.k-current-page {
+        display: none !important;
+    }
+
+    /* ALL pager elements - transparent background */
+    #Clients .k-pager-wrap,
+    #Clients .k-pager-wrap.k-grid-pager,
+    #Clients .k-pager-wrap.k-widget,
+    #Clients .k-pager-wrap .k-pager-numbers,
+    #Clients .k-pager-wrap .k-pager-numbers li,
+    #Clients .k-pager-wrap .k-pager-numbers li a,
+    #Clients .k-pager-wrap .k-pager-numbers li span,
+    #Clients .k-pager-wrap .k-pager-numbers .k-link,
+    #Clients .k-pager-wrap .k-link,
+    #Clients .k-pager-wrap .k-pager-nav,
+    #Clients .k-pager-wrap .k-pager-nav.k-link,
+    #Clients .k-pager-wrap .k-pager-first,
+    #Clients .k-pager-wrap .k-pager-last,
+    #Clients .k-pager-wrap .k-pager-info,
+    #Clients .k-pager-wrap .k-state-disabled {
+        background-color: transparent !important;
+        background: transparent !important;
+        background-image: none !important;
+    }
+
+    /* Selected page number styling - red text with underline above */
+    #Clients .k-pager-wrap .k-pager-numbers .k-state-selected {
+        background-color: transparent !important;
+        background: transparent !important;
+        border-color: transparent !important;
+        color: #ed5565 !important;
+        position: relative;
+    }
+
+    #Clients .k-pager-wrap .k-pager-numbers .k-state-selected::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 14px;
+        height: 2px;
+        background-color: #ed5565;
+    }
+
+    /* Hover effect for page numbers */
+    #Clients .k-pager-wrap .k-pager-numbers .k-link:hover {
+        color: #ed5565 !important;
+        background-color: transparent !important;
+    }
+</style>

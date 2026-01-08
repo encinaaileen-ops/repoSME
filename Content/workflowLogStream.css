@@ -1,0 +1,148 @@
+﻿.stream-activity, .stream-activity li {
+    list-style: none;
+    list-style-type: none;
+    padding: 0;
+}
+
+    .view-email-logs:hover,
+    .stream-activity .k-panelbar-collapse:hover {
+        cursor: pointer;
+    }
+
+.stream {
+    line-height: 1.1;
+    box-sizing: border-box;
+    border: none;
+}
+
+.stream-info {
+    color: #9a9d9f;
+}
+
+.stream .font-bold {
+    color: rgb(103, 106, 108);
+    font-weight: 600;
+}
+
+.stream-activity .panelbar-item-content {
+    margin-left: 55px;
+}
+
+.stream-activity .k-content {
+    padding: 0 0 0 13px;
+    border: none;
+}
+
+.stream-activity li:not(:last-child) .k-content:before {
+    content: '';
+    width: 1px;
+    background-color: #e7eaec;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 33px;
+}
+
+.stream-activity li:last-child .k-content:before {
+    content: '';
+    width: 1px;
+    background-color: #e7eaec;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 33px;
+    height: 43%;
+}
+
+
+.stream-activity li.k-item {
+    border: none;
+}
+
+    .stream-activity li.k-item span.k-link {
+        border: none;
+    }
+
+    .stream-activity li.k-item span.k-header {
+        border: none !important;
+    }
+
+.stream-activity li span.k-state-selected,
+.stream-activity li span.k-state-focused {
+    border: none;
+    box-shadow: none;
+}
+
+.stream-activity li .k-state-hover {
+    cursor: default;
+}
+
+.stream-activity li:not(:first-child) .stream:before {
+    content: '';
+    width: 1px;
+    background-color: #e7eaec;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 20px;
+}
+
+.stream-activity li:last-child .stream:before {
+    height: 10px;
+}
+
+.stream-activity li:last-child .k-state-selected .stream:before {
+    height: 100%;
+}
+
+.stream-activity li:last-child .stream-badge:before {
+    height: 0px;
+}
+
+.stream-activity li:last-child.k-state-active .stream-badge:before {
+    height: 100%;
+}
+
+.email-log-row {
+    cursor: pointer;
+}
+
+.mail-sent i {
+    position: absolute;
+    left: 27px;
+    top: 43%;
+    background-color: #fff;
+}
+
+.hr-notified {
+    color: green;
+}
+
+.stream-activity li span.false,
+.stream-activity span.undefined,
+.stream-activity span.null {
+    color: red;
+}
+
+.stream .no-data {
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    vertical-align: middle;
+    color: #000;
+}
+
+.email-recipients-column {
+    width: 1px;
+    white-space: nowrap;
+    padding-top: 5px !important;
+    padding-bottom: 0 !important;
+    vertical-align: top !important;
+    border: none !important;
+}
+
+.email-recipients-emails {
+    padding: 0 5px !important;
+    padding-top: 5px !important;
+    border: none !important;
+}

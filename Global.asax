@@ -1,0 +1,1 @@
+<%@ Application Codebehind="Global.asax.cs" Inherits="BenefitNetFlex.Sample.MvcApplication" Language="C#" %>

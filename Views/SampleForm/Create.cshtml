@@ -1,0 +1,304 @@
+@model BenefitNetFlex.Sample.Models.SampleFormViewModel
+@{
+    ViewBag.Title = "Create New Record";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Create New Record</h5>
+                </div>
+                <div class="ibox-content">
+                    @using (Html.BeginForm("Create", "SampleForm", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <!-- Basic Information Panel -->
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Basic Information</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter full name" })
+                                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "email@example.com" })
+                                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Phone, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "(555) 123-4567" })
+                                        @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    @Html.LabelFor(m => m.Category, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(m => m.Category, (SelectList)ViewBag.Categories, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.Category, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 3, placeholder = "Enter description..." })
+                                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Details Panel -->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Additional Details</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Status, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(m => m.Status,
+                                            new SelectList(new[] { "Active", "Inactive", "Pending" }, Model.Status),
+                                            new { @class = "form-control" })
+                                    </div>
+
+                                    @Html.LabelFor(m => m.Priority, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(m => m.Priority, (SelectList)ViewBag.Priorities, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Amount, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">$</span>
+                                            @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", placeholder = "0.00" })
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    @Html.LabelFor(m => m.DiscountPercentage, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(m => m.DiscountPercentage, new { @class = "form-control", placeholder = "0" })
+                                            <span class="input-group-addon">%</span>
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.DiscountPercentage, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.StartDate, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(m => m.StartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                        @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    @Html.LabelFor(m => m.EndDate, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(m => m.EndDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                        @Html.ValidationMessageFor(m => m.EndDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Website, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-10">
+                                        @Html.TextBoxFor(m => m.Website, new { @class = "form-control", placeholder = "https://example.com" })
+                                        @Html.ValidationMessageFor(m => m.Website, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location Panel -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Location Information</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Country, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(m => m.Country, (SelectList)ViewBag.Countries, new { @class = "form-control", id = "countrySelect" })
+                                    </div>
+
+                                    @Html.LabelFor(m => m.State, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(m => m.State, new { @class = "form-control", placeholder = "State/Province" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.PostalCode, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(m => m.PostalCode, new { @class = "form-control", placeholder = "12345" })
+                                        @Html.ValidationMessageFor(m => m.PostalCode, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    @Html.LabelFor(m => m.Gender, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-4">
+                                        <label class="radio-inline">
+                                            @Html.RadioButtonFor(m => m.Gender, "Male") Male
+                                        </label>
+                                        <label class="radio-inline">
+                                            @Html.RadioButtonFor(m => m.Gender, "Female") Female
+                                        </label>
+                                        <label class="radio-inline">
+                                            @Html.RadioButtonFor(m => m.Gender, "Other") Other
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Options Panel -->
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Options & Settings</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(m => m.IsActive) @Html.DisplayNameFor(m => m.IsActive)
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(m => m.AcceptTerms) @Html.DisplayNameFor(m => m.AcceptTerms)
+                                            </label>
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.AcceptTerms, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.AttachmentPath, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-10">
+                                        <input type="file" name="attachment" class="form-control" />
+                                        <span class="help-block">Accepted formats: PDF, DOC, DOCX, XLS, XLSX, PNG, JPG (Max 10MB)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-save"></i> Save
+                                </button>
+                                <button type="submit" name="action" value="SaveAndNew" class="btn btn-success">
+                                    <i class="fa fa-plus"></i> Save & Add New
+                                </button>
+                                <a href="@Url.Action("Index", "SampleList")" class="btn btn-default">
+                                    <i class="fa fa-times"></i> Cancel
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize form validation
+            $('form').validate();
+
+            // Check name availability on blur
+            $('#Name').blur(function() {
+                var name = $(this).val();
+                if (name) {
+                    $.post('@Url.Action("CheckNameAvailability", "SampleForm")', { name: name }, function(response) {
+                        if (!response.available) {
+                            swal('Name Taken', response.message, 'warning');
+                        }
+                    });
+                }
+            });
+
+            // Dynamic subcategory loading
+            $('#Category').change(function() {
+                var category = $(this).val();
+                if (category) {
+                    $.get('@Url.Action("GetSubcategories", "SampleForm")', { category: category }, function(data) {
+                        // Populate subcategories if needed
+                        console.log('Subcategories loaded');
+                    });
+                }
+            });
+
+            // Country-specific postal code validation
+            $('#countrySelect').change(function() {
+                var country = $(this).val();
+                var postalInput = $('#PostalCode');
+
+                if (country === 'US') {
+                    postalInput.attr('placeholder', '12345 or 12345-6789');
+                    postalInput.attr('pattern', '^\\d{5}(-\\d{4})?$');
+                } else if (country === 'CA') {
+                    postalInput.attr('placeholder', 'K1A 0B1');
+                    postalInput.attr('pattern', '^[A-Z]\\d[A-Z] \\d[A-Z]\\d$');
+                } else {
+                    postalInput.attr('placeholder', 'Postal code');
+                    postalInput.removeAttr('pattern');
+                }
+            });
+
+            // Calculate discounted amount
+            $('#Amount, #DiscountPercentage').on('keyup change', function() {
+                var amount = parseFloat($('#Amount').val()) || 0;
+                var discount = parseFloat($('#DiscountPercentage').val()) || 0;
+                var discounted = amount - (amount * discount / 100);
+
+                // Display calculated value somewhere if needed
+                console.log('Discounted amount: $' + discounted.toFixed(2));
+            });
+
+            // File upload validation
+            $('input[type="file"]').change(function() {
+                var file = this.files[0];
+                if (file) {
+                    var size = file.size / 1024 / 1024; // Size in MB
+                    if (size > 10) {
+                        swal('File Too Large', 'File size cannot exceed 10MB', 'error');
+                        $(this).val('');
+                        return;
+                    }
+
+                    var ext = file.name.split('.').pop().toLowerCase();
+                    var allowed = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'png', 'jpg', 'jpeg'];
+                    if ($.inArray(ext, allowed) === -1) {
+                        swal('Invalid File Type', 'Please select a valid file type', 'error');
+                        $(this).val('');
+                        return;
+                    }
+                }
+            });
+        });
+    </script>
+}

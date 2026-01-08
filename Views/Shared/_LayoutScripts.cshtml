@@ -1,0 +1,309 @@
+@{
+    // Simplified validation configuration
+}
+<script type="text/javascript">
+
+    $(function () {
+        $.validator.methods.date = function (value, element) {
+            if (value.trim() == '') {
+                return true;
+            }
+
+            var day = kendo.parseDate(value, settings.dateFormat);
+            return day != null;
+        };
+
+        $.validator.addMethod("imagevalidation", function (value) {
+            var regex = new RegExp('.*\\.(jpg|jpeg|png|gif|bmp)$');
+            if (!(regex.test(value.toLowerCase())) && value != "") {
+                return false;
+            }
+            return true;
+        }, "Please select a valid image file (jpg, jpeg, png, gif, bmp)");
+
+        $.validator.addMethod("knockout-extenders-validation", function () {
+            return false;
+        }, "Validation error");
+
+        $.validator.addMethod("documentvalidation", function (value, element) {
+            var regex = new RegExp('.*\\.(pdf|doc|docx|xls|xlsx|txt)$');
+            if (!(regex.test(element.value.toLowerCase())) && element.value != "") {
+                return false;
+            }
+            return true;
+        }, "Please select a valid document file (pdf, doc, docx, xls, xlsx, txt)");
+
+        $.validator.addMethod("multipledocumentsvalidation",
+            function (value, element, params) {
+                var extensions = params.split(',');
+                var regex = new RegExp('.*\\.(pdf|doc|docx|xls|xlsx|txt)$');
+                for (var i = 0; i < extensions.length; i++) {
+                    if (!(regex.test(extensions[i].toLowerCase()))) {
+                        return false;
+                    }
+                }
+                return true;
+            }, "Please select valid document files");
+
+        $.validator.addMethod("receiptvalidation", function (value) {
+            var regex = new RegExp('.*\\.(pdf|jpg|jpeg|png)$');
+            if (!(regex.test(value.toLowerCase())) && value != "") {
+                return false;
+            }
+            return true;
+        }, "Please select a valid receipt file (pdf, jpg, jpeg, png)");
+
+        $.validator.addMethod("excelvalidation", function (value) {
+            var regex = new RegExp('.*\\.(xls|xlsx|csv)$');
+            if (!(regex.test(value.toLowerCase())) && value != "") {
+                return false;
+            }
+            return true;
+        }, "Please select a valid Excel file (xls, xlsx, csv)");
+
+        $.validator.addMethod("data-rule-treeviewvalidation", function (value, element, param) {
+            if (value === "" && parseInt(param) == 2) {
+                return false;
+            }
+            return true;
+        }, "The field is required");
+
+
+        jQuery.validator.addMethod(
+            "multiemail",
+            function (value, element) {
+                var email = value.split(/[;]+/);
+
+                valid = true;
+                for (var i = 0; i < email.length ; i++) {
+                    value = email[i];
+                    valid = valid && jQuery.validator.methods.email.call(this, $.trim(value), element);
+                }
+                return valid;
+            },
+            "<span style='color:red'>Please enter valid email addresses separated by semicolons</span>"
+        );
+
+        $.validator.addMethod("data-rule-decimalvalidation", function (value, element, param) {
+            if (param == "true" && value.toString().match(/^\d+(\.\d+)?$/) == null) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }, "Incorrect data format");
+
+        $.validator.addMethod("data-rule-integervalidation", function (value, element, param) {
+
+            if (param == "true" && value.toString().match(/^\d+$/) == null) {
+                return false;
+            }
+            else
+                return true;
+        }, "Incorrect data format");
+
+        $.validator.addMethod("data-rule-integer-emptyvalidation", function (value, element, param) {
+            if (value.toString() === "" || param == "false" ) {
+                return true;
+            }
+            else {
+                if (param == "true" && value.toString().match(/^\d+$/) == null) {
+                    return false;
+                }
+                else
+                    return true;
+            }
+
+        }, "Incorrect data format");
+
+        $.validator.addMethod("data-rule-invalid", function (value, element, param) {
+            return false;
+        }, "");
+
+        $.validator.addMethod("zipvalidation", function (value) {
+            var regex = new RegExp('.*\\.(zip|rar|7z)$');
+            if (!(regex.test(value.toLowerCase())) && value != "") {
+                return false;
+            }
+            return true;
+        }, "Please select a valid zip file (zip, rar, 7z)");
+
+        $.validator.addMethod("data-val-greaterthanageband", function (value, element) {
+            var curIndex = $(element).attr("data-index");
+            var lowerValue = document.getElementsByName("ageLowerBand_" + curIndex)[0].value;
+            if (lowerValue == "" || value == "") {
+                return true;
+            }
+
+            if (parseInt(value) > parseInt(lowerValue)) {
+                return true;
+            }
+
+            return false;
+        }, "Upper must be greater than Lower");
+
+        $.validator.addMethod("data-val-range-date", function (value, element, parameters) {
+
+            var startDate = new Date(element.attributes["data-val-range-date-min"].value);
+            var endDate = new Date(element.attributes["data-val-range-date-max"].value);
+
+            startDate = dayjs(startDate).startOf('day').toDate();
+            endDate = dayjs(endDate).startOf('day').toDate();
+
+            var day = kendo.parseDate(value, settings.dateFormat);
+
+            if (day != null) {
+                return startDate <= day && day <= endDate;
+            } else {
+                return true;
+            }
+
+        }, function(params, element) {
+            return 'Date must be between ' + kendo.toString(kendo.parseDate(new Date(element.attributes["data-val-range-date-min"].value)), settings.dateFormat) +
+                ' and ' +
+                kendo.toString(kendo.parseDate(new Date(element.attributes["data-val-range-date-max"].value)), settings.dateFormat);
+        });
+
+    });
+
+
+
+    function onChangeRestrictValues() {
+        if (this.value() && this.selectedIndex == -1) {
+            this.text('');
+        }
+    }
+
+    $(window).on('load', function () {
+        $("input:checkbox").each(function () {
+            fixHiddenCheckField(this);
+        });
+
+        $("input:checkbox").change(function () {
+            fixHiddenCheckField(this);
+        });
+    });
+
+    function fixHiddenCheckField(checkField) {
+        var name = $(checkField).attr("name");
+        var hiddenSelector = "input[type=hidden][name='" + name + "']";
+        var checkBoxesInListSelector = "input:checkbox[name='" + name + "']";
+        var checkedCheckBoxesInListSelector = "input:checked[name='" + name + "']";
+
+        if ($(checkedCheckBoxesInListSelector).length >= 1 || $(checkBoxesInListSelector).length > 1) {
+            $("input").remove(hiddenSelector);
+        }
+        else {
+            if ($(hiddenSelector).length == 0)
+                $(checkField).parents("form").append("<input type='hidden' name='" + name + "' value='false' />");
+        }
+    }
+
+    $(function () {
+        $('form').on('focus', 'input[type=number]', function (e) {
+            $(this).on('mousewheel.disableScroll', function (e) {
+                e.preventDefault()
+            })
+        })
+        $('form').on('blur', 'input[type=number]', function (e) {
+            $(this).off('mousewheel.disableScroll')
+        })
+
+        $.validator.addMethod('isrequired',
+            function (value, element, parameters) {
+                var message = element.attributes["data-val-isrequired"].value;
+                if (message != "")
+                    return $.validator.methods.required.call(
+                        this, value, element, parameters);
+                return true;
+            }
+        );
+
+        $.validator.addMethod("data-val-ismandatory", function (value, element, parameters) {
+
+            return element.checked;
+        }, function (params, element) {
+            return params;
+        });
+
+        $.validator.addMethod("data-val-not-email", function (value) {
+            var regex = /^\w+([\.-]?\w+)*@@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+            var isValid = regex.test(value)
+            if (isValid) {
+                return false;
+            }
+            return true;
+        }, "Email address is not accepted as username");
+
+
+        // Disable scroll when focused on a number input.
+        $(':input[type=number]').on('mousewheel', function (e) {
+            $(this).blur();
+        });
+
+        // Disable up and down keys.
+        $(':input[type=number]').on('keydown', function (e) {
+            if (e.which == 38 || e.which == 40)
+                e.preventDefault();
+        });
+
+    });
+
+    $.validator.unobtrusive.adapters.add(
+        'isrequired', ['isRequired'],
+        function (options) {
+            options.rules['isrequired'] = { targetvalue: options.params['isrequired'] };
+            options.messages['isrequired'] = options.message;
+        });
+
+    if (!String.prototype.includes) {
+        String.prototype.includes = function (search, start) {
+            'use strict';
+            if (typeof start !== 'number') {
+                start = 0;
+            }
+
+            if (start + search.length > this.length) {
+                return false;
+            } else {
+                return this.indexOf(search, start) !== -1;
+            }
+        };
+    }
+
+    if (!Array.prototype.includes) {
+        Object.defineProperty(Array.prototype, 'includes', {
+            value: function (searchElement, fromIndex) {
+
+                if (this == null) {
+                    throw new TypeError('"this" is null or not defined');
+                }
+
+                var o = Object(this);
+                var len = o.length >>> 0;
+
+                if (len === 0) {
+                    return false;
+                }
+
+                var n = fromIndex | 0;
+                var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
+
+                function sameValueZero(x, y) {
+                    return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y));
+                }
+
+                while (k < len) {
+                    if (sameValueZero(o[k], searchElement)) {
+                        return true;
+                    }
+                    k++;
+                }
+
+                return false;
+            }
+        });
+    }
+
+</script>

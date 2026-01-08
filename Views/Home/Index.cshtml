@@ -1,0 +1,180 @@
+@{
+    ViewBag.Title = "Home";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="text-center m-t-lg">
+                <h1>
+                    Welcome to BenefitNetFlex Sample UI
+                </h1>
+                <p class="lead">
+                    A scaffold project for rapid prototyping and module development
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row m-t-lg">
+        <div class="col-lg-3">
+            <div class="contact-box">
+                <a href="@Url.Action("Index", "Dashboard")">
+                    <div class="col-sm-12">
+                        <div class="text-center">
+                            <i class="fa fa-dashboard fa-4x text-navy"></i>
+                            <h3>Dashboard</h3>
+                            <p>View statistics, charts, and activity feeds</p>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="contact-box">
+                <a href="@Url.Action("Index", "SampleList")">
+                    <div class="col-sm-12">
+                        <div class="text-center">
+                            <i class="fa fa-list fa-4x text-success"></i>
+                            <h3>List View</h3>
+                            <p>Browse data with filtering and sorting</p>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="contact-box">
+                <a href="@Url.Action("Create", "SampleForm")">
+                    <div class="col-sm-12">
+                        <div class="text-center">
+                            <i class="fa fa-edit fa-4x text-warning"></i>
+                            <h3>Form Example</h3>
+                            <p>Create and edit records with validation</p>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="contact-box">
+                <a href="@Url.Action("Details", "SampleDetail", new { id = 1 })">
+                    <div class="col-sm-12">
+                        <div class="text-center">
+                            <i class="fa fa-file-text fa-4x text-danger"></i>
+                            <h3>Detail View</h3>
+                            <p>View comprehensive record details</p>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row m-t-lg">
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Available Sample Modules</h5>
+                </div>
+                <div class="ibox-content">
+                    <ul>
+                        <li><strong>Dashboard:</strong> Statistics cards, charts, activity feeds</li>
+                        <li><strong>List View:</strong> Kendo Grid with server-side operations</li>
+                        <li><strong>Forms:</strong> Various input types with validation</li>
+                        <li><strong>Detail View:</strong> Tabbed interface with inline editing</li>
+                        <li><strong>Wizard:</strong> Multi-step form process</li>
+                        <li><strong>Reports:</strong> Data visualization and export</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Quick Start Guide</h5>
+                </div>
+                <div class="ibox-content">
+                    <ol>
+                        <li>Browse the sample modules to understand patterns</li>
+                        <li>Check <code>PATTERNS.md</code> for coding guidelines</li>
+                        <li>Use <code>CLAUDE-INSTRUCTIONS.md</code> for AI generation</li>
+                        <li>Create new controllers inheriting from <code>BaseController</code></li>
+                        <li>Follow the established naming conventions</li>
+                        <li>Use mock data for testing without database</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Technology Stack</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h4>Backend</h4>
+                            <ul>
+                                <li>ASP.NET MVC 5</li>
+                                <li>.NET Framework 4.6.2</li>
+                                <li>C#</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h4>Frontend</h4>
+                            <ul>
+                                <li>Razor Views</li>
+                                <li>jQuery 3.6.1</li>
+                                <li>Knockout.js</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h4>UI Components</h4>
+                            <ul>
+                                <li>Bootstrap 3</li>
+                                <li>Inspinia Theme</li>
+                                <li>Kendo UI</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h4>Tools</h4>
+                            <ul>
+                                <li>SignalR</li>
+                                <li>Font Awesome</li>
+                                <li>SweetAlert</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Animate contact boxes on hover
+            $('.contact-box').hover(
+                function() {
+                    $(this).addClass('animated pulse');
+                },
+                function() {
+                    $(this).removeClass('animated pulse');
+                }
+            );
+        });
+    </script>
+}

@@ -1,0 +1,69 @@
+﻿#topNavBar .feed-element {
+    margin-top: 0;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#global_search_listbox > li.k-item {
+    border-top: gainsboro;
+    border-top-style: solid;
+    border-top-width: 1px;
+}
+
+#global_search_listbox > li.k-item.k-first > div.feed-element {
+    margin-top: 38px;
+}
+
+#global_search_listbox > li.k-item > div.feed-element {
+    color: dimgray;
+    line-height: 1.5;
+}
+
+#topNavBar.feed-element:hover {
+    background-color: aliceblue;
+    cursor: pointer;
+}
+
+#global_search_listbox > li.k-item.k-first > div.k-group {
+    background-color: #f5f5f5;
+    left: 0;
+    height: 38px;
+    color: rgb(103, 106, 108);
+    font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: gainsboro;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+#global_search-list > div.k-group-header {
+    background-color: #f5f5f5;
+    color: rgb(103, 106, 108);
+    text-align: left;
+    height: 38px;
+    font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border-top: gainsboro;
+    border-top-style: solid;
+    border-top-width: 1px;
+}
+
+#topNavBar .search-container {
+    height: 70px;
+    background-color: #ffffff;
+}
+
+#topNavBar .verticaly-center {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+#topNavBar .verticaly-center .k-clear-value {
+    position: absolute;
+}

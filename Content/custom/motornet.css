@@ -1,0 +1,411 @@
+.top-navigation .navbar-brand {
+    background: #FFFFFF;
+    color: #fff;
+    padding: 0px;
+}
+
+    .top-navigation .navbar-brand img {
+        margin-left: 10px;
+    }
+
+.top-navigation .navbar-brand,
+.top-navigation .navbar-nav li a {
+    line-height: 50px;
+    height: 50px;
+    padding-top: 0;
+}
+
+
+.ibox-title {
+    padding-top: 5px;
+    padding-bottom: 2px;
+}
+
+
+.alert-info a {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+
+
+.color-green {
+    color: #1AB394;
+}
+
+color-black {
+    color: #FFFFFF;
+}
+
+.inlie-block {
+    display: inline;
+}
+
+.color-red {
+    color: #ED5565;
+}
+
+.color-yellow {
+    color: #ffae00;
+}
+
+.color-white {
+    color: #ffffff;
+}
+
+
+
+.color-grey {
+    color: #999C9E;
+}
+
+.color-blue {
+    color: #1C84C6;
+}
+
+.color-blue2 {
+    color: #5BC0DE;
+}
+
+
+ul.blist {
+    list-style: none outside none;
+    margin-left: 0;
+    padding-left: 0px;
+}
+
+    ul.blist li {
+        margin-bottom: 5px;
+    }
+
+.container {
+    width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+
+.breadcrumb {
+    background-color: inherit;
+    padding: 0px;
+    margin-bottom: 5px;
+    margin-top: 0px;
+}
+
+
+.label-blue {
+    background-color: #1C84C6;
+    color: #FFFFFF;
+}
+
+
+.padded5 {
+    padding: 5px;
+}
+
+.padded10 {
+    padding: 10px;
+}
+
+
+.padded15 {
+    padding: 15px;
+}
+
+
+.trHighlight {
+    background-color: #F9F9F9;
+}
+
+
+.trDisabled TD {
+    background-color: #cccccc;
+}
+
+.loginscreen.middle-box {
+    width: 7000px;
+}
+
+.middle-box {
+    max-width: 700px;
+    z-index: 100;
+    margin: 0px auto;
+    padding-top: 40px;
+}
+
+.lbrown-bg {
+    background-color: #EFEBE3;
+}
+
+.table-small td {
+    font-size: 12px;
+}
+
+.table-small th {
+    font-size: 12px;
+}
+
+.table-noborder > tbody > tr > td {
+    border-bottom: 0px;
+    border-top: 0px;
+    border-right: 0px;
+    border-left: 0px;
+    padding: 3px;
+    padding-left: 10px;
+}
+
+
+
+.color-green {
+    color: #1AB394;
+}
+
+.color-red {
+    color: #ED5565;
+}
+
+.color-yellow {
+    color: #ffae00;
+}
+
+.color-grey {
+    color: #999C9E;
+}
+
+.color-blue {
+    color: #1C84C6 !important;
+}
+
+.loginBg {
+    background-image: url(../img/rainbow3.jpg);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: left center;
+    height: 800px;
+    padding: 0px;
+    margin: 0px;
+}
+
+/*.navbar-static-top {
+    border-bottom:2px solid #357188;
+}*/
+
+.page-title {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.breadcrumb-wrapper {
+    margin-bottom: 8px;
+    margin-left: 10px;
+}
+
+.warpper {
+}
+
+.productSettingsSection {
+}
+
+/*.wrapper-content {
+  padding-top: 10px !important;
+  padding-left: 0px !important;
+}*/
+
+/*#page-wrapper {
+    padding-left: 10px !important;
+}*/
+
+
+.your-clock {
+    zoom: 0.5;
+    -moz-transform: scale(0.5);
+}
+
+
+.tblcond > tbody > tr > td {
+    border-top: 1px solid #E7EAEC;
+    line-height: 1.42857;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    vertical-align: top;
+}
+
+
+.panel {
+    -ms-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+
+.panel-group {
+    -ms-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+
+.ibox-title {
+    border-left: 1px solid #e7eaec;
+    border-right: 1px solid #e7eaec;
+}
+
+
+.ibox-content {
+    border-left: 1px solid #e7eaec;
+    border-bottom: 1px solid #e7eaec;
+    border-right: 1px solid #e7eaec;
+}
+
+
+
+.panel-body {
+    background: #ffffff;
+}
+
+.panel-options .nav .active {
+    background: #ffffff !important;
+}
+
+
+.actionColumn {
+    width: 30px;
+}
+
+.headerwithIcon h3 {
+    margin-left: 32px;
+    padding-top: 5px;
+}
+
+.test {
+    width: 20px;
+    height: 20px;
+    background: green;
+    padding: 1px;
+    margin-right: 7px;
+    border-radius: 100%;
+    color: white;
+    text-align: center;
+    float: left;
+}
+
+.dropdown-menu > li > a {
+    border-radius: 3px;
+    color: inherit;
+    line-height: 28px;
+    margin: 4px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+.help-block {
+    display: block;
+    margin-top: 7px;
+    margin-bottom: 10px;
+    color: #737373;
+}
+
+.modal-lg {
+    width: 1100px;
+}
+
+.form-label-value {
+    margin-top: 7px;
+    font-weight: normal;
+    /*float: left;*/
+}
+
+.tab-pane {
+    min-height: 500px;
+}
+
+.margin-right-min {
+    margin-right: 3px;
+}
+
+/* Kendo UI overriding */
+
+.k-button {
+    color: #fff !important;
+    background-color: #1ab394 !important;
+    border-color: #1ab394 !important;
+}
+
+    .k-button:hover {
+        background-color: #18a689 !important;
+        border-color: #18a689 !important;
+    }
+
+.fuelux .wizard {
+    -ms-border-radius: 0;
+    border-radius: 0;
+}
+
+.k-top {
+    border-bottom: solid 1px #eee;
+}
+
+.k-mid {
+    border-bottom: solid 1px #eee;
+}
+
+.k-bot {
+    border-bottom: solid 1px #eee;
+}
+
+
+.overflow-visible-im {
+    overflow: visible !important;
+}
+
+.has-error span.k-dropdown-wrap, .has-error span.k-picker-wrap /*, .has-error span.k-numeric-wrap*/ {
+    border-color: #B94A48;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+
+.lang-buttons {
+    margin-top: 15px;
+    margin-right: 5px;
+}
+
+.flag {
+    height: 24px;
+    width: 24px;
+    vertical-align: middle;
+    margin-left: 3px;
+}
+
+#flag-ua {
+    background-image: url(../../Content/Images/flags/ua.png);
+}
+
+#flag-en {
+    background-image: url(../../Content/Images/flags/gb.png);
+}
+
+#flag-sa {
+    background-image: url(../../Content/Images/flags/sa.png);
+}
+
+#flag-cn {
+    background-image: url(../../Content/Images/flags/cn.png);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.renewal-inprogress-row {
+    background-color: #CDFFCC !important;
+}
+
+.renewal-inprogress-row-nosource {
+    background-color: #CDFFCC !important;
+    color: #ED5565 !important;
+}

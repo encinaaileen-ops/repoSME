@@ -1,0 +1,23 @@
+﻿<style>
+
+    .table > tbody > tr:first-child > td {
+        border: none;
+    }
+</style>
+
+<div>
+    <table class="table">
+        <tbody role="rowgroup" data-bind="template: { foreach: RemindersGrid.Rows , nodes: $componentTemplateNodes, data:  $data }"></tbody>
+    </table>
+</div>
+<div class="row" data-bind="visible:Options.ShowPagingControl">
+    <div class="text-center col-xs-8 col-xs-offset-2" data-bind="visible:RemindersGrid.Rows().length > 0">
+        <button class="btn btn-white" data-bind="click:RemindersGrid.LoadMore, css:RemindersGrid.LoadMoreButtonCssBtnStyle, visible:RemindersGrid.LoadMoreButtonVisibility">
+        <span data-bind="text:RemindersGrid.LoadMoreButtonText"></span> <i data-bind="css:RemindersGrid.LoadMoreButtonCssIcon"></i></button>
+    </div>
+    <div class="col-xs-2 p-sm">
+        <span data-bind="text:RemindersGrid.PageControlLabel"></span>
+    </div>
+</div>
+
+ 

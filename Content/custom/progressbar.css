@@ -1,0 +1,39 @@
+﻿#progressbar_container {
+	margin: 0px;
+	width: 400px;
+	background-color: transparent;
+}
+
+.progress .bar {
+	-webkit-transition-duration: 0s;
+	-moz-transition-duration: 0s;
+	-o-transition-duration: 0s;
+	transition-duration: 0s;
+}
+
+.progressbar-window {
+	background-color: transparent;
+}
+
+/*div.k-window < div.progressbar-window  {
+	background-color: transparent;
+}*/
+
+#progressbar {
+	margin: 0;
+     -webkit-box-shadow: none;
+	-moz-box-shadow: none;
+    box-shadow: none;
+}
+
+#progressbar_window_wrap {
+    -webkit-box-shadow: none;
+	-moz-box-shadow: none;
+    box-shadow: none;
+    background-color: transparent;
+    border: none;
+}
+
+#ProgressBarWindow {
+    background-color: transparent;
+}

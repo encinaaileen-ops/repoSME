@@ -1,0 +1,56 @@
+﻿.k-grid td .label-blue {
+        margin-left: 5px;
+    }
+
+    button.btn.btn-default.btn-xs.dropdown-toggle {
+        padding-left: 6px;
+        padding-top: 2px;
+    }
+
+    i.fa.fa-bars {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        transform: translate(0, 0);
+    }
+
+    .fa-navicon:before, .fa-reorder:before, .fa-bars:before {
+        content: "\f0c9";
+    }
+
+    .k-grid-content .btn-group {
+        position: absolute;
+    }
+
+        .k-grid-content .btn-group .btn {
+            top: -10px;
+        }
+
+    .k-grid-content ul.dropdown-menu.pull-right {
+        top: 13px;
+    }
+
+    .k-grid-content ul.dropdown-menu {
+        left: auto;
+        right: 0;
+    }
+
+    div.form-group {
+        min-height: 35px;
+    }
+
+    .modal .modal-body {
+    max-height: 620px;
+    overflow-y: auto;
+}
+
+.swal-move{
+    width:600px;
+}
+
+.row-green {
+    background-color: #CDFFCC !important;
+}

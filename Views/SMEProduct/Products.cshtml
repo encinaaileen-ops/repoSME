@@ -1,0 +1,495 @@
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Title = "SME Product Admin";
+}
+
+<div class="tabs-container">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#tab-1"><i class="fa fa-cubes"></i> Products</a></li>
+        <li><a data-toggle="tab" href="#tab-2"><i class="fa fa-bar-chart"></i> Key Statistics</a></li>
+    </ul>
+    <div class="tab-content">
+        <!-- Products Tab -->
+        <div id="tab-1" class="tab-pane active">
+            <div class="panel-body">
+                <!-- Search Panel -->
+                <div class="ibox">
+                    <div class="ibox-title collapse-link" style="cursor: pointer;">
+                        <h5><i class="fa fa-search"></i> Search Products</h5>
+                        <div class="ibox-tools">
+                            <a><i class="fa fa-chevron-up"></i></a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <form id="searchForm" class="form-horizontal">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Name/Code</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="txtName" class="form-control" placeholder="Search by name or code..." />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Category</label>
+                                        <div class="col-sm-8">
+                                            <select id="ddlCategory" class="form-control">
+                                                <option value="">All Categories</option>
+                                                @foreach (var category in ViewBag.Categories as IEnumerable<BenefitNetFlex.Sample.Models.ProductCategoryModel>)
+                                                {
+                                                    <option value="@category.CategoryId">@category.CategoryName</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Insurer</label>
+                                        <div class="col-sm-8">
+                                            <select id="ddlInsurer" class="form-control">
+                                                <option value="">All Insurers</option>
+                                                @foreach (var insurer in ViewBag.Insurers as IEnumerable<BenefitNetFlex.Sample.Models.InsurerModel>)
+                                                {
+                                                    <option value="@insurer.InsurerId">@insurer.InsurerName</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Country</label>
+                                        <div class="col-sm-8">
+                                            <select id="ddlCountry" class="form-control">
+                                                <option value="">All Countries</option>
+                                                @foreach (var country in ViewBag.Countries as IEnumerable<BenefitNetFlex.Sample.Models.CountryModel>)
+                                                {
+                                                    <option value="@country.Id">@country.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Status</label>
+                                        <div class="col-sm-8">
+                                            <select id="ddlStatus" class="form-control">
+                                                <option value="">All Status</option>
+                                                <option value="true">Active</option>
+                                                <option value="false">Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Default Rec.</label>
+                                        <div class="col-sm-8">
+                                            <select id="ddlDefaultRec" class="form-control">
+                                                <option value="">All</option>
+                                                <option value="true">Yes</option>
+                                                <option value="false">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <button type="button" id="btnSearch" class="btn btn-primary btn-w-m"><i class="fa fa-search"></i> Search</button>
+                                    <button type="button" id="btnReset" class="btn btn-default btn-w-m"><i class="fa fa-refresh"></i> Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div id="ProductsGrid"></div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="row m-t-md">
+                    <div class="col-md-12">
+                        <a href="@Url.Action("Add", "SMEProduct")" class="btn btn-primary"><i class="fa fa-plus"></i> Add Product</a>
+                        <button type="button" id="btnExport" class="btn btn-default"><i class="fa fa-file-excel-o"></i> Export</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Statistics Tab -->
+        <div id="tab-2" class="tab-pane">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>Total Products</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins" id="statTotalProducts">-</h1>
+                                <small>Products configured</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>Active Products</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins color-green" id="statActiveProducts">-</h1>
+                                <small>Currently active</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>Total Plans</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins" id="statTotalPlans">-</h1>
+                                <small>Plan tiers available</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>Default Recommendations</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins text-navy" id="statDefaultRec">-</h1>
+                                <small>Shown by default on portal</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>Products by Category</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div id="categoryChart" style="height: 300px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>Category Breakdown</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th class="text-center">Products</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><i class="fa fa-shield text-navy"></i> Life & Protection Benefits</td>
+                                            <td class="text-center" id="statLifeProtection">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-medkit text-success"></i> Medical Benefits</td>
+                                            <td class="text-center" id="statMedical">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-plus-square text-info"></i> Additional Benefits</td>
+                                            <td class="text-center" id="statAdditional">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    $(document).ready(function () {
+        // Initialize Products Grid
+        $("#ProductsGrid").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "@Url.Action("SearchProductsAsync", "SMEProduct")",
+                        type: "POST",
+                        dataType: "json",
+                        data: function () {
+                            return {
+                                name: $("#txtName").val(),
+                                categoryId: $("#ddlCategory").val() || null,
+                                insurerId: $("#ddlInsurer").val() || null,
+                                countryId: $("#ddlCountry").val() || null,
+                                isActive: $("#ddlStatus").val() || null,
+                                isDefaultRecommendation: $("#ddlDefaultRec").val() || null
+                            };
+                        }
+                    }
+                },
+                schema: {
+                    data: "Data",
+                    total: "Total"
+                },
+                pageSize: 10,
+                serverPaging: true
+            },
+            pageable: {
+                refresh: true,
+                pageSizes: [10, 20, 50],
+                buttonCount: 5
+            },
+            sortable: true,
+            resizable: true,
+            columns: [
+                {
+                    field: "ProductCode",
+                    title: "Code",
+                    width: 80,
+                    template: "<a href='@Url.Action("Details", "SMEProduct")#=QueryString#' class='text-navy'><strong>#=ProductCode#</strong></a>"
+                },
+                {
+                    field: "ProductName",
+                    title: "Product Name",
+                    width: 200,
+                    template: "<a href='@Url.Action("Details", "SMEProduct")#=QueryString#'>#=ProductName#</a>"
+                },
+                {
+                    field: "CategoryName",
+                    title: "Category",
+                    width: 180
+                },
+                {
+                    field: "InsurerName",
+                    title: "Insurer",
+                    width: 140
+                },
+                {
+                    field: "CountryName",
+                    title: "Country",
+                    width: 100
+                },
+                {
+                    field: "PlansCount",
+                    title: "Plans",
+                    width: 70,
+                    attributes: { class: "text-center" },
+                    headerAttributes: { class: "text-center" }
+                },
+                {
+                    field: "IsDefaultRecommendation",
+                    title: "Default Rec.",
+                    width: 100,
+                    attributes: { class: "text-center" },
+                    headerAttributes: { class: "text-center" },
+                    template: "# if (IsDefaultRecommendation) { #<span class='label label-primary'>Yes</span># } else { #<span class='label label-default'>No</span># } #"
+                },
+                {
+                    field: "IsActive",
+                    title: "Status",
+                    width: 80,
+                    attributes: { class: "text-center" },
+                    headerAttributes: { class: "text-center" },
+                    template: "# if (IsActive) { #<span class='label label-success'>Active</span># } else { #<span class='label label-danger'>Inactive</span># } #"
+                },
+                {
+                    title: "Actions",
+                    width: 100,
+                    attributes: { class: "text-center" },
+                    headerAttributes: { class: "text-center" },
+                    template: "<a href='@Url.Action("Details", "SMEProduct")#=QueryString#' class='btn btn-xs btn-primary' title='Edit'><i class='fa fa-edit'></i></a> " +
+                              "<button type='button' class='btn btn-xs btn-default btn-clone' data-id='#=ProductId#' title='Clone'><i class='fa fa-copy'></i></button>"
+                }
+            ]
+        });
+
+        // Search button click
+        $("#btnSearch").click(function () {
+            $("#ProductsGrid").data("kendoGrid").dataSource.read();
+        });
+
+        // Reset button click
+        $("#btnReset").click(function () {
+            $("#txtName").val("");
+            $("#ddlCategory").val("");
+            $("#ddlInsurer").val("");
+            $("#ddlCountry").val("");
+            $("#ddlStatus").val("");
+            $("#ddlDefaultRec").val("");
+            $("#ProductsGrid").data("kendoGrid").dataSource.read();
+        });
+
+        // Enter key triggers search
+        $("#searchForm input").keypress(function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                $("#btnSearch").click();
+            }
+        });
+
+        // Export button click
+        $("#btnExport").click(function () {
+            $.ajax({
+                url: "@Url.Action("ExportProducts", "SMEProduct")",
+                type: "POST",
+                data: {
+                    name: $("#txtName").val(),
+                    categoryId: $("#ddlCategory").val() || null,
+                    insurerId: $("#ddlInsurer").val() || null
+                },
+                success: function (result) {
+                    toastr.info("Export generated (sample)");
+                }
+            });
+        });
+
+        // Collapse search panel toggle
+        $(".collapse-link").click(function () {
+            var ibox = $(this).closest("div.ibox");
+            var content = ibox.children(".ibox-content");
+            content.slideToggle(200);
+            $(this).find("i.fa-chevron-up, i.fa-chevron-down").toggleClass("fa-chevron-up fa-chevron-down");
+        });
+
+        // Load statistics when stats tab is shown
+        $('a[href="#tab-2"]').on("shown.bs.tab", function () {
+            loadStatistics();
+            loadCategoryChart();
+        });
+
+        // Clone button click
+        $(document).on("click", ".btn-clone", function () {
+            var productId = $(this).data("id");
+            toastr.info("Clone functionality - Product ID: " + productId + " (sample only)");
+        });
+    });
+
+    function loadStatistics() {
+        $.ajax({
+            url: "@Url.Action("GetProductsQuickStat", "SMEProduct")",
+            type: "GET",
+            success: function (result) {
+                if (result.Success) {
+                    var stats = result.ProductsStat;
+                    $("#statTotalProducts").text(stats.TotalProductsCount);
+                    $("#statActiveProducts").text(stats.ActiveProductsCount);
+                    $("#statTotalPlans").text(stats.TotalPlansCount);
+                    $("#statDefaultRec").text(stats.DefaultRecommendationCount);
+                    $("#statLifeProtection").text(stats.LifeProtectionCount);
+                    $("#statMedical").text(stats.MedicalCount);
+                    $("#statAdditional").text(stats.AdditionalBenefitsCount);
+                }
+            }
+        });
+    }
+
+    function loadCategoryChart() {
+        $.ajax({
+            url: "@Url.Action("GetCategoryDemographics", "SMEProduct")",
+            type: "POST",
+            success: function (data) {
+                $("#categoryChart").kendoChart({
+                    legend: {
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        labels: {
+                            visible: true,
+                            template: "#= category #: #= value #"
+                        }
+                    },
+                    series: [{
+                        type: "pie",
+                        data: data,
+                        field: "value",
+                        categoryField: "category"
+                    }],
+                    tooltip: {
+                        visible: true,
+                        template: "#= category #: #= value # products"
+                    }
+                });
+            }
+        });
+    }
+</script>
+}
+
+<style>
+    .tabs-container .tab-content {
+        padding: 0;
+    }
+
+    .tabs-container .panel-body {
+        padding: 20px;
+    }
+
+    .ibox {
+        margin-bottom: 20px;
+    }
+
+    .ibox-title {
+        background-color: #f5f5f5;
+        border-bottom: 1px solid #e7eaec;
+    }
+
+    .ibox-title h5 {
+        font-weight: 600;
+    }
+
+    .collapse-link .ibox-tools a i {
+        transition: transform 0.3s ease;
+    }
+
+    .btn-w-m {
+        min-width: 100px;
+    }
+
+    .label {
+        font-weight: 500;
+    }
+
+    .text-navy {
+        color: #1ab394;
+    }
+
+    .color-green {
+        color: #1ab394;
+    }
+
+    .no-margins {
+        margin: 0;
+    }
+
+    #ProductsGrid .k-grid-content {
+        min-height: 300px;
+    }
+
+    .k-grid td a {
+        color: #337ab7;
+    }
+
+    .k-grid td a:hover {
+        text-decoration: underline;
+    }
+</style>

@@ -1,0 +1,138 @@
+@model BenefitNetFlex.Sample.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_AccountLayoutFlex.cshtml";
+}
+
+<style>
+    body {
+        background: url(../../Images/loginBGLockton.png);
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+</style>
+
+<div class="row" id="login_page">
+    <div class="col-lg-1">
+    </div>
+    <div class="col-lg-4" style="margin: 10% 0 0 5%;">
+        <div class="panel panel-default" style="border-radius: 3% !important;">
+            <div class="panel-body" style="border-radius: 3%;">
+                <div class="text-center">
+                    <img style="display: block; margin: 5px auto; width: 200px;" src="~/Images/LocktonConnectLogoColour.png" />
+                </div>
+
+                <div id="signin">
+                    <h2><i class="fa fa-lock" style="color: #ffae00 !important;"></i> Login to Your Account</h2>
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "m-t", id = "signin_form", autocomplete = "off" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div id="reset_password_email_sended" class="alert alert-info" style="display: none;">
+                            Reset password email has been sent
+                        </div>
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        if (Model != null && !string.IsNullOrEmpty(Model.ErrorMessage))
+                        {
+                            <div class="alert alert-danger">
+                                @Model.ErrorMessage
+                            </div>
+                        }
+
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.UserName, new {
+                                tabindex = "1",
+                                id = "signin_username",
+                                placeholder = "Username",
+                                @class = "form-control",
+                                autocomplete = "off"
+                            })
+                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.PasswordFor(m => m.Password, new {
+                                tabindex = "2",
+                                id = "signin_password",
+                                placeholder = "Password",
+                                @class = "form-control",
+                                autocomplete = "off"
+                            })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+
+                        <button type="submit" id="btnSubmit" class="btn btn-primary block full-width m-b">Login</button>
+
+                        <div class="text-center m-b">
+                            <span style="color: #999;">- OR -</span>
+                        </div>
+
+                        <a href="@Url.Action("SsoLogin", "Account")" class="btn btn-white block full-width m-b" style="border: 1px solid #e7eaec;">
+                            <i class="fa fa-windows" style="color: #00a4ef;"></i> Sign in with Microsoft
+                        </a>
+
+                        <a href="#" onclick="showResetPassForm()"><small>Forgot password?</small></a>
+                    }
+                </div>
+
+                <div id="reset_password">
+                    @* Placeholder for reset password partial view *@
+                </div>
+
+                <div class="wrapper wrapper-content animated fadeInRight" id="systemMessageBox" style="display: none;">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="alert alert-info" style="margin-bottom:1px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    @Styles.Render("~/plugins/iCheckStyles")
+}
+
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts/custom/account.login.js"></script>
+
+    <script type="text/javascript">
+        function showResetPassForm() {
+            $('#signin').hide();
+            $('#reset_password').show();
+            return false;
+        }
+
+        function showSigninForm() {
+            $('#reset_password').hide();
+            $('#signin').show();
+            return false;
+        }
+
+        $(document).ready(function() {
+            // Focus on username field
+            $('#signin_username').focus();
+
+            // Form submit handler
+            $('#btnSubmit').click(function(e) {
+                e.preventDefault();
+                $('#signin_form').submit();
+            });
+
+            // Initialize iCheck if available
+            if ($.fn.iCheck) {
+                $('.i-checks').iCheck({
+                    checkboxClass: 'icheckbox_square-green',
+                    radioClass: 'iradio_square-green'
+                });
+            }
+        });
+    </script>
+}

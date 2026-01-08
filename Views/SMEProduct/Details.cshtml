@@ -1,0 +1,654 @@
+@model BenefitNetFlex.Sample.Models.SMEProductModel
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Title = Model.ProductId > 0 ? Model.ProductName + " (" + Model.ProductCode + ")" : "Add Product";
+    var isNew = Model.ProductId == 0;
+}
+
+<div class="row m-b-md">
+    <div class="col-md-12">
+        <a href="@Url.Action("Products", "SMEProduct")" class="btn btn-default"><i class="fa fa-arrow-left"></i> Back to Products</a>
+        @if (!isNew)
+        {
+            <span class="m-l-md">
+                @if (Model.IsActive)
+                {
+                    <span class="label label-success">Active</span>
+                }
+                else
+                {
+                    <span class="label label-danger">Inactive</span>
+                }
+                @if (Model.IsDefaultRecommendation)
+                {
+                    <span class="label label-primary m-l-xs">Default Recommendation</span>
+                }
+            </span>
+        }
+    </div>
+</div>
+
+<div class="tabs-container">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#tab-details"><i class="fa fa-info-circle"></i> Details</a></li>
+        @if (!isNew)
+        {
+            <li><a data-toggle="tab" href="#tab-plans"><i class="fa fa-list"></i> Plans</a></li>
+        }
+    </ul>
+    <div class="tab-content">
+        <!-- Details Tab -->
+        <div id="tab-details" class="tab-pane active">
+            <div class="panel-body">
+                <form id="productForm" class="form-horizontal">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="ProductId" name="ProductId" value="@Model.ProductId" />
+
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>Product Information</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Product Code <span class="text-danger">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="ProductCode" name="ProductCode" class="form-control" value="@Model.ProductCode" maxlength="20" required @(isNew ? "" : "readonly") />
+                                            <span class="help-block">Unique identifier (e.g., GTL, GHS)</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Product Name <span class="text-danger">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="ProductName" name="ProductName" class="form-control" value="@Model.ProductName" maxlength="200" required />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Category <span class="text-danger">*</span></label>
+                                        <div class="col-sm-8">
+                                            <select id="CategoryId" name="CategoryId" class="form-control" required>
+                                                <option value="">-- Select Category --</option>
+                                                @foreach (var category in ViewBag.Categories as IEnumerable<BenefitNetFlex.Sample.Models.ProductCategoryModel>)
+                                                {
+                                                    <option value="@category.CategoryId" @(Model.CategoryId == category.CategoryId ? "selected" : "")>@category.CategoryName</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Insurer <span class="text-danger">*</span></label>
+                                        <div class="col-sm-8">
+                                            <select id="InsurerId" name="InsurerId" class="form-control" required>
+                                                <option value="">-- Select Insurer --</option>
+                                                @foreach (var insurer in ViewBag.Insurers as IEnumerable<BenefitNetFlex.Sample.Models.InsurerModel>)
+                                                {
+                                                    <option value="@insurer.InsurerId" @(Model.InsurerId == insurer.InsurerId ? "selected" : "")>@insurer.InsurerName</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Country <span class="text-danger">*</span></label>
+                                        <div class="col-sm-8">
+                                            <select id="CountryId" name="CountryId" class="form-control" required>
+                                                <option value="">-- Select Country --</option>
+                                                @foreach (var country in ViewBag.Countries as IEnumerable<BenefitNetFlex.Sample.Models.CountryModel>)
+                                                {
+                                                    <option value="@country.Id" @(Model.CountryId == country.Id ? "selected" : "")>@country.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Display Order</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" id="DisplayOrder" name="DisplayOrder" class="form-control" value="@Model.DisplayOrder" min="0" />
+                                            <span class="help-block">Order in portal display</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Status</label>
+                                        <div class="col-sm-8">
+                                            <div class="checkbox checkbox-success">
+                                                <input type="checkbox" id="IsActive" name="IsActive" value="true" @(Model.IsActive ? "checked" : "") />
+                                                <label for="IsActive">Active</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Default Recommendation</label>
+                                        <div class="col-sm-8">
+                                            <div class="checkbox checkbox-primary">
+                                                <input type="checkbox" id="IsDefaultRecommendation" name="IsDefaultRecommendation" value="true" @(Model.IsDefaultRecommendation ? "checked" : "") />
+                                                <label for="IsDefaultRecommendation">Show by default on portal</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>Description</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Short Description</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="ShortDescription" name="ShortDescription" class="form-control" value="@Model.ShortDescription" maxlength="500" />
+                                    <span class="help-block">Brief summary shown on product cards</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Full Description</label>
+                                <div class="col-sm-10">
+                                    <textarea id="Description" name="Description" class="form-control" rows="4">@Model.Description</textarea>
+                                    <span class="help-block">Detailed description shown on product detail page</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary btn-w-m"><i class="fa fa-save"></i> Save Product</button>
+                            <a href="@Url.Action("Products", "SMEProduct")" class="btn btn-default btn-w-m">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Plans Tab -->
+        @if (!isNew)
+        {
+            <div id="tab-plans" class="tab-pane">
+                <div class="panel-body">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>Plans for @Model.ProductName</h5>
+                            <div class="ibox-tools">
+                                <button type="button" id="btnAddPlan" class="btn btn-xs btn-primary"><i class="fa fa-plus"></i> Add Plan</button>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <div id="PlansGrid"></div>
+                        </div>
+                    </div>
+
+                    <!-- Plan Detail Panel (shown when editing a plan) -->
+                    <div id="planDetailPanel" class="ibox" style="display: none;">
+                        <div class="ibox-title">
+                            <h5><span id="planDetailTitle">Plan Details</span></h5>
+                            <div class="ibox-tools">
+                                <button type="button" id="btnClosePlanDetail" class="btn btn-xs btn-default"><i class="fa fa-times"></i> Close</button>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <form id="planForm" class="form-horizontal">
+                                <input type="hidden" id="PlanId" name="PlanId" value="0" />
+                                <input type="hidden" id="PlanProductId" name="ProductId" value="@Model.ProductId" />
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Plan Code <span class="text-danger">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="PlanCode" name="PlanCode" class="form-control" maxlength="20" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Plan Name <span class="text-danger">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="PlanName" name="PlanName" class="form-control" maxlength="100" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Tier Level <span class="text-danger">*</span></label>
+                                            <div class="col-sm-8">
+                                                <select id="TierLevel" name="TierLevel" class="form-control" required>
+                                                    <option value="1">Tier 1</option>
+                                                    <option value="2">Tier 2</option>
+                                                    <option value="3">Tier 3</option>
+                                                    <option value="4">Tier 4</option>
+                                                    <option value="5">Tier 5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Ward Type</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="WardType" name="WardType" class="form-control" maxlength="50" />
+                                                <span class="help-block">For hospitalization plans (e.g., 1 Bed Pte)</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Display Order</label>
+                                            <div class="col-sm-8">
+                                                <input type="number" id="PlanDisplayOrder" name="DisplayOrder" class="form-control" value="1" min="0" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Status</label>
+                                            <div class="col-sm-8">
+                                                <div class="checkbox checkbox-success">
+                                                    <input type="checkbox" id="PlanIsActive" name="IsActive" value="true" checked />
+                                                    <label for="PlanIsActive">Active</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-right">
+                                        <button type="submit" class="btn btn-primary btn-w-m"><i class="fa fa-save"></i> Save Plan</button>
+                                        <button type="button" id="btnCancelPlan" class="btn btn-default btn-w-m">Cancel</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Pricing Grid (shown for existing plans) -->
+                            <div id="pricingSection" class="m-t-lg" style="display: none;">
+                                <h4>Age-Banded Pricing</h4>
+                                <p class="text-muted">Rates per $1,000 sum assured (annual)</p>
+                                <div id="PricingGrid"></div>
+                                <div class="m-t-md">
+                                    <button type="button" id="btnSavePricing" class="btn btn-success"><i class="fa fa-save"></i> Save Pricing</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    var productId = @Model.ProductId;
+    var currentPlanId = 0;
+
+    $(document).ready(function () {
+        // Initialize form validation
+        $("#productForm").validate({
+            errorClass: "text-danger",
+            errorElement: "span",
+            highlight: function (element) {
+                $(element).closest(".form-group").addClass("has-error");
+            },
+            unhighlight: function (element) {
+                $(element).closest(".form-group").removeClass("has-error");
+            }
+        });
+
+        // Product form submit
+        $("#productForm").submit(function (e) {
+            e.preventDefault();
+            if (!$(this).valid()) return;
+
+            var formData = {
+                ProductId: $("#ProductId").val(),
+                ProductCode: $("#ProductCode").val(),
+                ProductName: $("#ProductName").val(),
+                CategoryId: $("#CategoryId").val(),
+                InsurerId: $("#InsurerId").val(),
+                CountryId: $("#CountryId").val(),
+                DisplayOrder: $("#DisplayOrder").val() || 0,
+                IsActive: $("#IsActive").is(":checked"),
+                IsDefaultRecommendation: $("#IsDefaultRecommendation").is(":checked"),
+                ShortDescription: $("#ShortDescription").val(),
+                Description: $("#Description").val()
+            };
+
+            $.ajax({
+                url: "@Url.Action("SaveProduct", "SMEProduct")",
+                type: "POST",
+                data: formData,
+                headers: { "__RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                success: function (result) {
+                    if (result.Success) {
+                        toastr.success(result.Message);
+                        if (productId === 0) {
+                            window.location.href = "@Url.Action("Details", "SMEProduct")?productId=" + result.ProductId;
+                        }
+                    } else {
+                        toastr.error(result.Message || "Failed to save product");
+                    }
+                },
+                error: function () {
+                    toastr.error("An error occurred while saving");
+                }
+            });
+        });
+
+        @if (!isNew)
+        {
+            <text>
+        // Initialize Plans Grid
+        $("#PlansGrid").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "@Url.Action("GetProductPlans", "SMEProduct")",
+                        type: "POST",
+                        dataType: "json",
+                        data: function () {
+                            return { productId: productId };
+                        }
+                    }
+                },
+                schema: {
+                    data: "Data",
+                    total: "Total"
+                },
+                pageSize: 10,
+                serverPaging: true
+            },
+            pageable: true,
+            sortable: true,
+            columns: [
+                { field: "PlanCode", title: "Code", width: 100 },
+                { field: "PlanName", title: "Plan Name", width: 200 },
+                { field: "TierLevel", title: "Tier", width: 70, attributes: { class: "text-center" }, headerAttributes: { class: "text-center" } },
+                { field: "WardType", title: "Ward Type", width: 120 },
+                {
+                    field: "IsActive", title: "Status", width: 80,
+                    attributes: { class: "text-center" },
+                    headerAttributes: { class: "text-center" },
+                    template: "# if (IsActive) { #<span class='label label-success'>Active</span># } else { #<span class='label label-danger'>Inactive</span># } #"
+                },
+                {
+                    title: "Actions", width: 150,
+                    attributes: { class: "text-center" },
+                    headerAttributes: { class: "text-center" },
+                    template: "<button type='button' class='btn btn-xs btn-primary btn-edit-plan' data-id='#=PlanId#' title='Edit'><i class='fa fa-edit'></i> Edit</button> " +
+                              "<button type='button' class='btn btn-xs btn-info btn-pricing' data-id='#=PlanId#' data-name='#=PlanName#' title='Pricing'><i class='fa fa-dollar'></i> Pricing</button>"
+                }
+            ]
+        });
+
+        // Add Plan button
+        $("#btnAddPlan").click(function () {
+            resetPlanForm();
+            $("#planDetailTitle").text("Add New Plan");
+            $("#pricingSection").hide();
+            $("#planDetailPanel").slideDown();
+        });
+
+        // Edit Plan button
+        $(document).on("click", ".btn-edit-plan", function () {
+            var planId = $(this).data("id");
+            var grid = $("#PlansGrid").data("kendoGrid");
+            var dataItem = grid.dataSource.get(planId) || grid.dataSource.data().find(function(item) { return item.PlanId === planId; });
+
+            if (dataItem) {
+                currentPlanId = planId;
+                $("#PlanId").val(dataItem.PlanId);
+                $("#PlanCode").val(dataItem.PlanCode);
+                $("#PlanName").val(dataItem.PlanName);
+                $("#TierLevel").val(dataItem.TierLevel);
+                $("#WardType").val(dataItem.WardType);
+                $("#PlanDisplayOrder").val(dataItem.DisplayOrder);
+                $("#PlanIsActive").prop("checked", dataItem.IsActive);
+
+                $("#planDetailTitle").text("Edit Plan: " + dataItem.PlanName);
+                $("#pricingSection").hide();
+                $("#planDetailPanel").slideDown();
+            }
+        });
+
+        // Pricing button
+        $(document).on("click", ".btn-pricing", function () {
+            var planId = $(this).data("id");
+            var planName = $(this).data("name");
+            currentPlanId = planId;
+
+            $("#planDetailTitle").text("Pricing: " + planName);
+            $("#planDetailPanel").slideDown();
+            $("form#planForm").hide();
+            $("#pricingSection").show();
+
+            loadPricingGrid(planId);
+        });
+
+        // Close plan detail
+        $("#btnClosePlanDetail, #btnCancelPlan").click(function () {
+            $("#planDetailPanel").slideUp();
+            $("form#planForm").show();
+            currentPlanId = 0;
+        });
+
+        // Plan form submit
+        $("#planForm").submit(function (e) {
+            e.preventDefault();
+
+            var formData = {
+                PlanId: $("#PlanId").val(),
+                ProductId: productId,
+                PlanCode: $("#PlanCode").val(),
+                PlanName: $("#PlanName").val(),
+                TierLevel: $("#TierLevel").val(),
+                WardType: $("#WardType").val(),
+                DisplayOrder: $("#PlanDisplayOrder").val() || 1,
+                IsActive: $("#PlanIsActive").is(":checked")
+            };
+
+            $.ajax({
+                url: "@Url.Action("SavePlan", "SMEProduct")",
+                type: "POST",
+                data: formData,
+                success: function (result) {
+                    if (result.Success) {
+                        toastr.success(result.Message);
+                        $("#PlansGrid").data("kendoGrid").dataSource.read();
+                        $("#planDetailPanel").slideUp();
+                        resetPlanForm();
+                    } else {
+                        toastr.error(result.Message || "Failed to save plan");
+                    }
+                },
+                error: function () {
+                    toastr.error("An error occurred while saving");
+                }
+            });
+        });
+
+        // Save Pricing button
+        $("#btnSavePricing").click(function () {
+            var grid = $("#PricingGrid").data("kendoGrid");
+            var data = grid.dataSource.data().toJSON();
+
+            $.ajax({
+                url: "@Url.Action("SavePricing", "SMEProduct")",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (result) {
+                    if (result.Success) {
+                        toastr.success(result.Message);
+                    } else {
+                        toastr.error(result.Message || "Failed to save pricing");
+                    }
+                },
+                error: function () {
+                    toastr.error("An error occurred while saving pricing");
+                }
+            });
+        });
+            </text>
+        }
+    });
+
+    function resetPlanForm() {
+        currentPlanId = 0;
+        $("#PlanId").val(0);
+        $("#PlanCode").val("");
+        $("#PlanName").val("");
+        $("#TierLevel").val("1");
+        $("#WardType").val("");
+        $("#PlanDisplayOrder").val(1);
+        $("#PlanIsActive").prop("checked", true);
+        $("form#planForm").show();
+    }
+
+    function loadPricingGrid(planId) {
+        if ($("#PricingGrid").data("kendoGrid")) {
+            $("#PricingGrid").data("kendoGrid").destroy();
+            $("#PricingGrid").empty();
+        }
+
+        $("#PricingGrid").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "@Url.Action("GetPlanPricing", "SMEProduct")",
+                        type: "POST",
+                        dataType: "json",
+                        data: function () {
+                            return { planId: planId };
+                        }
+                    }
+                },
+                schema: {
+                    data: "Data",
+                    total: "Total",
+                    model: {
+                        id: "PricingId",
+                        fields: {
+                            PricingId: { type: "number" },
+                            AgeBandName: { type: "string", editable: false },
+                            CompulsoryEmployeeRate: { type: "number" },
+                            CompulsoryDependentRate: { type: "number" },
+                            VoluntaryEmployeeRate: { type: "number" },
+                            VoluntaryDependentRate: { type: "number" }
+                        }
+                    }
+                },
+                pageSize: 10
+            },
+            pageable: false,
+            sortable: false,
+            editable: true,
+            columns: [
+                { field: "AgeBandName", title: "Age Band", width: 140 },
+                {
+                    title: "Compulsory",
+                    columns: [
+                        { field: "CompulsoryEmployeeRate", title: "Employee", width: 100, format: "{0:n2}", attributes: { class: "text-right" } },
+                        { field: "CompulsoryDependentRate", title: "Dependent", width: 100, format: "{0:n2}", attributes: { class: "text-right" } }
+                    ]
+                },
+                {
+                    title: "Voluntary",
+                    columns: [
+                        { field: "VoluntaryEmployeeRate", title: "Employee", width: 100, format: "{0:n2}", attributes: { class: "text-right" } },
+                        { field: "VoluntaryDependentRate", title: "Dependent", width: 100, format: "{0:n2}", attributes: { class: "text-right" } }
+                    ]
+                }
+            ]
+        });
+    }
+</script>
+}
+
+<style>
+    .tabs-container .tab-content {
+        padding: 0;
+    }
+
+    .tabs-container .panel-body {
+        padding: 20px;
+    }
+
+    .ibox {
+        margin-bottom: 20px;
+    }
+
+    .ibox-title {
+        background-color: #f5f5f5;
+        border-bottom: 1px solid #e7eaec;
+    }
+
+    .ibox-title h5 {
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .ibox-tools {
+        float: right;
+    }
+
+    .btn-w-m {
+        min-width: 100px;
+    }
+
+    .m-l-md {
+        margin-left: 15px;
+    }
+
+    .m-l-xs {
+        margin-left: 5px;
+    }
+
+    .m-b-md {
+        margin-bottom: 15px;
+    }
+
+    .m-t-lg {
+        margin-top: 25px;
+    }
+
+    .m-t-md {
+        margin-top: 15px;
+    }
+
+    .text-danger {
+        color: #ed5565;
+    }
+
+    .has-error .form-control {
+        border-color: #ed5565;
+    }
+
+    .checkbox label {
+        padding-left: 5px;
+    }
+
+    .checkbox input[type="checkbox"] {
+        margin-right: 5px;
+    }
+
+    .help-block {
+        font-size: 12px;
+        color: #999;
+    }
+
+    #planDetailPanel {
+        border: 2px solid #1ab394;
+    }
+
+    #planDetailPanel .ibox-title {
+        background-color: #1ab394;
+        color: white;
+    }
+
+    #planDetailPanel .ibox-title h5 {
+        color: white;
+    }
+
+    #PricingGrid .k-grid-content td {
+        padding: 5px 10px;
+    }
+
+    #PricingGrid input.k-textbox {
+        text-align: right;
+    }
+</style>

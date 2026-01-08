@@ -1,0 +1,74 @@
+﻿
+<style>
+    .panel-heading .accordion-toggle:after {
+        /* symbol for "opening" panels */
+        font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+        content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+        float: right;        /* adjust as needed */
+        color: grey;         /* adjust as needed */
+    }
+    .panel-heading .accordion-toggle.collapsed:after {
+        /* symbol for "collapsed" panels */
+        content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+    }
+</style>
+
+
+<div class="panel-group" id="accordion">
+    <!-- ko foreach: GroupsGrid.Rows -->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h5 class="panel-title">
+                        <span data-bind="text:Name"></span>
+                    </h5>
+                </div>
+                <div class="col-sm-4">
+                    <div class="pull-right">
+                        <!-- ko foreach: QntByTypeList -->
+                        <span data-bind="css:CssClass, text:Qnt"></span>
+                        <!-- /ko -->
+                        <a data-toggle="collapse" aria-expanded="false" class="accordion-toggle collapsed" data-bind="attr:{ 'data-parent':'#accordion', href:('#collapsed' + Year + '-' +  Month)}">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-collapse collapse" aria-expanded="false" style="height: 0px;" data-bind="attr:{ id:('collapsed' + Year  + '-' + Month)}">
+            <div class="panel-body">
+                <!-- ko template: { nodes: $componentTemplateNodes, data: $data } --><!-- /ko -->
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+</div>
+
+<div class="row" data-bind="visible:GroupsGrid.Rows().length > 0">
+    <div class="text-center col-xs-8 col-xs-offset-2" >
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li>
+                    <a href="#" aria-label="@Strings.EmailTemplates_Previos" data-bind="click:GroupsGrid.PreviosPageClick">
+                        <span aria-hidden="true" >&laquo;</span>
+                        <span data-bind="text:Options.strings.PreviosThreeMonths"></span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" aria-label="@Strings.EmailTemplates_Next" data-bind="click:GroupsGrid.NextPageClick">                       
+                        <span data-bind="text:Options.strings.NextThreeMonths"></span>
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="col-xs-2 p-sm">
+        <span data-bind="text:GroupsGrid.PageControlLabel"></span>
+    </div>
+</div>
+
+
+
+

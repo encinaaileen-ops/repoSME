@@ -1,0 +1,170 @@
+@{
+    // Get user information from ViewBag
+    var userName = ViewBag.UserDisplayName ?? "Sample User";
+    var userRole = ViewBag.UserRole ?? "Broker";
+    var userAvatar = ViewBag.UserAvatar ?? "/Images/flex/images/avatars/AvatarFemale.png";
+}
+
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                    <img src="~/Images/LocktonConnectLogoWhite.png" class="image img-responsive">
+                    <div class="row" style="margin-top:20px;">
+                        <div class="col-sm-4 no-padding">
+                            <img alt="image" class="img-profile img-circle" src="@userAvatar" style="width:60px;height:60px">
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="clear">
+                                    <span class="block m-t-xs">
+                                        <strong class="font-bold">@userName</strong>
+                                    </span>
+                                    <span class="text-muted text-xs block">@userRole <b class="caret"></b></span>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs" style="margin-left: -20px">
+                                <li><a href="@Url.Action("ChangePassword", "Account")">Change Password</a></li>
+                                <li><a href="@Url.Action("EditOwnProfile", "User")">Edit Account</a></li>
+                                <li><a href="@Url.Action("Logout", "Account")">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="logo-element">
+                    BNET
+                </div>
+            </li>
+
+            <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "Dashboard" ? "active" : "")">
+                <a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-home"></i> <span class="nav-label">Home</span></a>
+            </li>
+
+            <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "WorkflowCensus" ? "active" : "")">
+                <a href="@Url.Action("Search", "WorkflowCensus")"><i class="fa fa-check color-yellow"></i> <span class="nav-label">Pending Tasks</span></a>
+            </li>
+
+            <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "Carrier" ? "active" : "")">
+                <a href="@Url.Action("Carriers", "Carrier")"><i class="fa fa-umbrella color-green"></i> <span class="nav-label">Insurers</span></a>
+            </li>
+
+            <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "Client" ? "active" : "")">
+                <a href="@Url.Action("Clients", "Client")"><i class="fa fa-building-o color-green"></i> <span class="nav-label">Clients</span></a>
+            </li>
+
+            <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "Member" ? "active" : "")">
+                <a href="@Url.Action("Search", "Member")"><i class="fa fa-users color-blue"></i> <span class="nav-label">Members</span></a>
+            </li>
+
+            <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "MedicalClaim" ? "active" : "")">
+                <a href="@Url.Action("Search", "MedicalClaim")"><i class="fa fa-calculator color-red"></i> <span class="nav-label">Reimbursement Claims</span></a>
+            </li>
+
+            <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "Invoice" ? "active" : "")">
+                <a href="@Url.Action("Search", "Invoice")"><i class="fa fa-file-o"></i> <span class="nav-label">Invoices</span></a>
+            </li>
+
+            <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "SMEProduct" ? "active" : "")">
+                <a href="@Url.Action("Products", "SMEProduct")"><i class="fa fa-cubes color-blue"></i> <span class="nav-label">SME Products</span></a>
+            </li>
+
+            @* Add more menu items as needed with submenu support *@
+            @*
+            <li>
+                <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Reports</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="#">Report 1</a></li>
+                    <li><a href="#">Report 2</a></li>
+                </ul>
+            </li>
+            *@
+
+        </ul>
+
+        @* Bottom menu items *@
+        <ul class="nav" style="margin-top: 50px; margin-bottom: 25px;">
+            <li><a href="@Url.Action("Logout", "Account")"><i class="fa fa-sign-out color-white"></i> <span class="nav-label">&nbsp;Logout</span></a></li>
+
+            <li>
+                <a href="#"><span class="nav-label">Language</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<style>
+    /* Add color classes for icons */
+    .color-yellow {
+        color: #f8ac59 !important;
+    }
+    .color-green {
+        color: #1ab394 !important;
+    }
+    .color-blue {
+        color: #23c6c8 !important;
+    }
+    .color-red {
+        color: #ed5565 !important;
+    }
+    .color-white {
+        color: #ffffff !important;
+    }
+
+    /* Profile element styling */
+    .nav-header .dropdown.profile-element {
+        padding: 20px 10px;
+    }
+
+    .nav-header .dropdown.profile-element .dropdown-toggle,
+    .nav-header .dropdown.profile-element .dropdown-toggle:hover,
+    .nav-header .dropdown.profile-element .dropdown-toggle:focus,
+    .nav-header .dropdown.open .dropdown-toggle {
+        text-align: left;
+        background-color: transparent !important;
+    }
+
+    .nav-header .dropdown.profile-element .col-sm-8.no-padding {
+        padding-left: 10px !important;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-header .profile-element .dropdown-menu {
+        left: 0;
+        right: auto;
+    }
+
+    .nav-header .no-padding {
+        padding: 0;
+    }
+
+    .nav-header .img-profile {
+        border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    /* Logo element for collapsed menu */
+    .logo-element {
+        text-align: center;
+        padding: 20px 0;
+        font-weight: 600;
+        font-size: 16px;
+        background: #1ab394;
+        color: #fff;
+        display: none;
+    }
+
+    .navbar-minimalize.minimalize-styl-2 ~ .navbar-static-side .logo-element {
+        display: block;
+    }
+
+    body.mini-navbar .logo-element {
+        display: block;
+    }
+
+    body:not(.mini-navbar) .nav-header .logo-element {
+        display: none;
+    }
+</style>

@@ -1,0 +1,70 @@
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta name="referrer" content="no-referrer" />
+
+	<title>BN | Login</title>
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/plugins/validate")
+	@Scripts.Render("~/bundles/jqueryunobtrajax")
+
+	@if (IsSectionDefined("Styles"))
+	{@RenderSection("Styles", required: false)
+	}
+
+	@Scripts.Render("~/plugins/iCheck")
+	@Scripts.Render("~/plugins/flot")
+	@Scripts.Render("~/plugins/vectorMap")
+
+	<!-- Primary Inspinia style -->
+	@Styles.Render("~/font-awesome/css")
+	@Styles.Render("~/Content/css")
+
+	<script src="@Url.Content("~/Scripts/custom/shared/fixvalidation.js")"></script>
+
+	<link href="@Url.Content("~/Content/old-bootstrap/bootstrap.min.css")" rel="stylesheet">
+	<link href="@Url.Content("~/Fonts/font-awesome/css/font-awesome.css")" rel="stylesheet">
+
+	<link href="@Url.Content("~/Content/animate.css")" rel="stylesheet">
+	<link href="@Url.Content("~/Content/style.css")" rel="stylesheet">
+
+	<link href="@Url.Content("~/Content/custom/motornet.css")" rel="stylesheet">
+
+	@Scripts.Render("~/bundles/bootstrap")
+	@Scripts.Render("~/plugins/slimScroll")
+	@Scripts.Render("~/bundles/inspinia")
+
+	@RenderSection("scripts", required: false)
+
+	<script>
+		$(document).ready(function() {
+			$('.i-checks').iCheck({
+				checkboxClass: 'icheckbox_square-green'
+			});
+		});
+	</script>
+
+</head>
+
+<body class="gray-bg">
+<div >
+	<div>
+		<div>
+			@RenderBody()
+		</div>
+	</div>
+</div>
+</body>
+</html>
+
+

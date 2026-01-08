@@ -1,0 +1,22 @@
+@media print {
+	.wrapper-content {
+		padding: 15px !important;
+	}
+
+	.noprint {
+		display: none;
+	}
+
+	a[href]:after {
+		content: none !important;
+	}
+
+	.ibox-content {
+		padding: 0;
+		border: 0;
+	}
+	
+	.ibox {
+		margin-bottom: 0;
+	}
+}

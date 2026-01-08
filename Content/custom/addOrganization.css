@@ -1,0 +1,5 @@
+﻿.insurancePolicyTypeCombobox,
+.policyName, .policyNumber,
+.insurerName, .insurancePolicyStartDateCalendar, .insurancePolicyEndDateCalendar {
+    width: 100%;
+}

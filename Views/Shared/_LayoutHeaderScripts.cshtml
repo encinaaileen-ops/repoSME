@@ -1,0 +1,107 @@
+@{
+    // Simplified timeout and session configuration
+    var timeout = 30;  // Default 30 minutes
+    var timeoutDisplay = 5;  // Default 5 minutes warning
+}
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/common.js")"></script>
+<script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+<script src="/signalr/hubs" type="text/javascript"></script>
+
+@Styles.Render("~/Content/jqueryIdleTimeout/css")
+@Scripts.Render("~/bundles/jqueryIdleTimeout")
+@Scripts.Render("~/bundles/dayjs")
+@Styles.Render("~/Content/Sarabun/css")
+
+<script>
+
+    var timeout =            @timeout,
+        timeoutDisplay =     @timeoutDisplay,
+        title =             'Idle Timeout',
+        text =              'Your session is about to expire due to inactivity.',
+        timeRemaining =     'Time Remaining',
+        loginBtnCaption =   'Stay Logged In',
+        logoutBtnCaption =  'Log Out Now';
+
+    var kendoParseFormats =  ["dd/MM/yyyy", "MM/dd/yyyy", "yyyy-MM-dd"];
+
+    $(document).ready(function () {
+
+        kendo.ui.DatePicker.fn.options.parseFormats = kendoParseFormats;
+
+        Date.prototype.toJSON = function () {
+            return dayjs(this).format(settings.dateFormat.toUpperCase());
+        }
+
+        $(document).idleTimeout({
+            redirectUrl:            '@Url.Action("LogOff", "Account")',
+            idleTimeLimit:          timeout * 60,
+            activityEvents:         'click keypress scroll wheel mousewheel',
+            dialogDisplayLimit:     timeoutDisplay * 60 ,
+            sessionKeepAliveTimer:  false,
+
+            dialogTitle: title,
+            dialogText:  text,
+            dialogTimeRemaining: timeRemaining,
+            dialogStayLoggedInButton: loginBtnCaption,
+            dialogLogOutNowButton: logoutBtnCaption
+        });
+    });
+
+    //------------------------------------------------------------------
+
+    var settings = {
+        dateFormat: 'dd/MM/yyyy'
+    }
+
+    var animationTimerId;
+    var hub = $.connection.systemNotificationHub;
+    $.connection.hub.start();
+
+    var strings = {
+        all: 'All',
+        selectFiles: 'Select Files',
+        errorOnSubmit: 'Error on Submit',
+        fieldIsRequired: 'The field is required'
+    };
+
+    function updateRecordUserActivityTime() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("UpdateRecordUserActivityTime", "User")",
+            success:function(data) {
+                if(data == false){
+                    window.location = '@Url.Action("Login", "Account")';
+                }
+            }
+        });
+    }
+
+    $(function() {
+        updateRecordUserActivityTime();
+        setInterval(updateRecordUserActivityTime, 60000);
+    });
+
+    var globalConstants = {
+        defaultCurrency: 1  // Default currency ID
+    };
+
+    hub.client.persistentLogOff = function () {
+        // Handle persistent logoff
+    }
+
+    function invokeHub() {
+        hub.server.persistentLogOff();
+    }
+
+    function persistentLogOff(){
+        $('#idle-timeout-logOff').idleTimeout({
+            timeout: 0,
+            messageTimeout: 5 * 60,
+            callback: logout,
+            text: "You have been logged out",
+            linkText: ""
+        });
+    }
+
+</script>

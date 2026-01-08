@@ -1,0 +1,40 @@
+<!-- Global Search Bar (hidden by default) -->
+<link rel="stylesheet" type="text/css" href="~/Content/globalSearch.css">
+
+<div id="topNavBar" class="row border-bottom" style="display: none;">
+    <div class="search-container">
+        <div class="col-xs-1 pull-right verticaly-center"><a id="hideGlobalSearchBtn" class="special-link  pull-right"><i class="fa fa-close "></i></a></div>
+        <div class="col-xs-6 verticaly-center">
+            <input type="text" id="global_search" class="form-control" placeholder="Search for members, clients, policies..." style="width:400px; border:none; font-size: 11pt;">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var GlobalSearch = (function ($, undefined) {
+        function init() {
+            $('#showGlobalSearchBtn').click(showSearchBar);
+            $('#hideGlobalSearchBtn').click(hideSearchBar);
+        }
+
+        function showSearchBar() {
+            $('#titleAndBCContainer').hide();
+            $('#topNavBar').show();
+            $('#global_search').focus();
+        }
+
+        function hideSearchBar() {
+            $("#global_search").val("");
+            $('#topNavBar').hide();
+            $('#titleAndBCContainer').show();
+        }
+
+        return {
+            init: init
+        }
+    }(jQuery));
+
+    $(document).ready(function () {
+        GlobalSearch.init();
+    });
+</script>

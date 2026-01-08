@@ -1,0 +1,27 @@
+﻿
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-sm-8">
+                <h5 class="panel-title">
+                    <a data-toggle="collapse" aria-expanded="false" class="collapsed" data-bind="attr:{ 'data-parent':Options.PanelGroupSelector, href:('#collapsed' + NameWithoutSpaces)}">
+                        <span data-bind="text:Name"></span>
+                    </a>     
+                </h5>
+            </div>
+            <div class="col-sm-4">
+                <div class="pull-right">
+                    <!-- ko foreach: QntByTypeList -->
+                    <span data-bind="css:CssClass, text:Qnt"></span>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-collapse collapse" aria-expanded="false" style="height: 0px;" data-bind="attr:{ id:('collapsed' + NameWithoutSpaces)}">
+        <div class="panel-body">
+            <!-- ko template: { nodes: $componentTemplateNodes, data: $data } --><!-- /ko -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="footer">
+    <div>
+        <img src="~/Images/LocktonConnectLogoBlack.png" class="image img-responsive no-margins" style="float: left; height: 25px;" />
+    </div>
+    @if (ViewBag.ShowTermsOfUse == true)
+    {
+        <div style="float: right; margin-top: 5px;">
+            <a target="_blank" href="@Url.Action("GetTermsOfUseLink", "User", new { linkType = "TermsOfUse" })">
+                Terms of Use
+            </a>
+            &nbsp;|&nbsp;
+            <a target="_blank" href="@Url.Action("GetTermsOfUseLink", "User", new { linkType = "PrivacyNotice" })">
+                Privacy Notice
+            </a>
+        </div>
+    }
+</div>

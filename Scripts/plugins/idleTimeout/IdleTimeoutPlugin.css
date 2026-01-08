@@ -1,0 +1,10 @@
+﻿.idle-timeout-wrap {
+    background-color: #ed5565; 
+    color: #fff;
+    text-align: center; 
+    padding: 8px; 
+    display: none;
+}
+.idle-timeout-wrap  > a {
+    color: #fff; font-weight: bold; text-decoration: underline;
+}

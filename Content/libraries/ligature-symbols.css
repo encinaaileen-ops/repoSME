@@ -1,0 +1,241 @@
+@font-face {
+    font-family: 'LigatureSymbols';
+	  src: url('../font/LigatureSymbols-2.11.eot');
+	  src: url('../font/LigatureSymbols-2.11.eot?#iefix') format('embedded-opentype'),
+	       url('../font/LigatureSymbols-2.11.woff') format('woff'),
+	       url('../font/LigatureSymbols-2.11.ttf') format('truetype'),
+	       url('../font/LigatureSymbols-2.11.svg#LigatureSymbols') format('svg');
+	  font-weight: normal;
+	  font-style: normal;
+}
+
+[class^="lsf-icon-"]:before, [class*=" lsf-icon-"]:before {
+  font-family: LigatureSymbols;
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+}
+a [class^="lsf-icon-"], a [class*=" lsf-icon-"] {
+  display: inline-block;
+  text-decoration: inherit;
+}
+/* makes the font 33% larger relative to the lsf-icon container */
+.lsf-icon-large:before {
+  vertical-align: top;
+  font-size: 1.3333333333333333em;
+}
+.btn [class^="lsf-icon-"], .btn [class*=" lsf-icon-"] {
+  /* keeps button heights with and without lsf-icons the same */
+
+  line-height: .9em;
+}
+li [class^="lsf-icon-"], li [class*=" lsf-icon-"] {
+  display: inline-block;
+  width: 1.25em;
+  text-align: center;
+}
+li .lsf-icon-large[class^="lsf-icon-"], li .lsf-icon-large[class*=" lsf-icon-"] {
+  /* 1.5 increased font size for lsf-icon-large * 1.25 width */
+
+  width: 1.875em;
+}
+li[class^="lsf-icon-"], li[class*=" lsf-icon-"] {
+  margin-left: 0;
+  list-style-type: none;
+}
+li[class^="lsf-icon-"]:before, li[class*=" lsf-icon-"]:before {
+  text-indent: -2em;
+  text-align: center;
+}
+li[class^="lsf-icon-"].lsf-icon-large:before, li[class*=" lsf-icon-"].lsf-icon-large:before {
+  text-indent: -1.3333333333333333em;
+}
+/*  Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
+    readers do not read off random characters that represent lsf-icons */
+	.lsf-icon-file:before                { content: '\E048'}
+	.lsf-icon-print:before                { content: '\E10a'}
+	.lsf-icon-delete:before                { content: '\E12c'}
+	.lsf-icon-clear:before                { content: '\E02f'}
+	.lsf-icon-save:before                { content: '\E115'}
+	.lsf-icon-upload:before                { content: '\E136'}
+	.lsf-icon-cloud:before                { content: '\E031'}
+	.lsf-icon-folder:before                { content: '\E04c'}
+	.lsf-icon-camera:before                { content: '\E026'}
+	.lsf-icon-photo:before                { content: '\E101'}
+	.lsf-icon-image:before                { content: '\E074'}
+	.lsf-icon-barcode:before                { content: '\E013'}
+	.lsf-icon-phone:before                { content: '\E100'}
+	.lsf-icon-music:before                { content: '\E094'}
+	.lsf-icon-video:before                { content: '\E139'}
+	.lsf-icon-playmedia:before                { content: '\E107'}
+	.lsf-icon-record:before                { content: '\E10d'}
+	.lsf-icon-play:before                { content: '\E106'}
+	.lsf-icon-pause:before                { content: '\E09d'}
+	.lsf-icon-stop:before                { content: '\E123'}
+	.lsf-icon-eject:before                { content: '\E042'}
+	.lsf-icon-bell:before                { content: '\E014'}
+	.lsf-icon-volumeup:before                { content: '\E13d'}
+	.lsf-icon-volumedown:before                { content: '\E13c'}
+	.lsf-icon-volume:before                { content: '\E13b'}
+	.lsf-icon-off:before                { content: '\E098'}
+	.lsf-icon-light:before                { content: '\E14c'}
+	.lsf-icon-dark:before                { content: '\E147'}
+	.lsf-icon-lock:before                { content: '\E086'}
+	.lsf-icon-unlock:before                { content: '\E134'}
+	.lsf-icon-flag:before                { content: '\E04a'}
+	.lsf-icon-wifi:before                { content: '\E140'}
+	.lsf-icon-time:before                { content: '\E12b'}
+	.lsf-icon-map:before                { content: '\E08b'}
+	.lsf-icon-geo:before                { content: '\E056'}
+	.lsf-icon-location:before                { content: '\E085'}
+	.lsf-icon-pin:before                { content: '\E103'}
+	.lsf-icon-walking:before                { content: '\E13e'}
+	.lsf-icon-bicycle:before                { content: '\E015'}
+	.lsf-icon-car:before                { content: '\E027'}
+	.lsf-icon-bus:before                { content: '\E024'}
+	.lsf-icon-plane:before                { content: '\E105'}
+	.lsf-icon-compass:before                { content: '\E036'}
+	.lsf-icon-cursor:before                { content: '\E166'}
+	.lsf-icon-pointer:before                { content: '\E16b'}
+	.lsf-icon-grab:before                { content: '\E169'}
+	.lsf-icon-arrowup:before                { content: '\E00e'}
+	.lsf-icon-arrowright:before                { content: '\E00d'}
+	.lsf-icon-arrowdown:before                { content: '\E00b'}
+	.lsf-icon-arrowleft:before                { content: '\E00c'}
+	.lsf-icon-up:before                { content: '\E135'}
+	.lsf-icon-right:before                { content: '\E112'}
+	.lsf-icon-down:before                { content: '\E03e'}
+	.lsf-icon-left:before                { content: '\E080'}
+	.lsf-icon-back:before                { content: '\E00f'}
+	.lsf-icon-next:before                { content: '\E096'}
+	.lsf-icon-dropdown:before                { content: '\E040'}
+	.lsf-icon-sort:before                { content: '\E120'}
+	.lsf-icon-good:before                { content: '\E059'}
+	.lsf-icon-bad:before                { content: '\E011'}
+	.lsf-icon-full:before                { content: '\E053'}
+	.lsf-icon-small:before                { content: '\E11d'}
+	.lsf-icon-move:before                { content: '\E093'}
+	.lsf-icon-undo:before                { content: '\E133'}
+	.lsf-icon-forward:before                { content: '\E04e'}
+	.lsf-icon-reply:before                { content: '\E111'}
+	.lsf-icon-share:before                { content: '\E118'}
+	.lsf-icon-login:before                { content: '\E087'}
+	.lsf-icon-logout:before                { content: '\E088'}
+	.lsf-icon-exchange:before                { content: '\E045'}
+	.lsf-icon-shuffle:before                { content: '\E11a'}
+	.lsf-icon-repeat:before                { content: '\E110'}
+	.lsf-icon-refresh:before                { content: '\E10e'}
+	.lsf-icon-sync:before                { content: '\E125'}
+	.lsf-icon-external:before                { content: '\E046'}
+	.lsf-icon-addstar:before                { content: '\E000'}
+	.lsf-icon-star:before                { content: '\E121'}
+	.lsf-icon-starempty:before                { content: '\E122'}
+	.lsf-icon-heart:before                { content: '\E06e'}
+	.lsf-icon-heartempty:before                { content: '\E06f'}
+	.lsf-icon-view:before                { content: '\E13a'}
+	.lsf-icon-comment:before                { content: '\E034'}
+	.lsf-icon-comments:before                { content: '\E035'}
+	.lsf-icon-plus:before                { content: '\E108'}
+	.lsf-icon-minus:before                { content: '\E08f'}
+	.lsf-icon-zoomin:before                { content: '\E142'}
+	.lsf-icon-zoomout:before                { content: '\E143'}
+	.lsf-icon-search:before                { content: '\E116'}
+	.lsf-icon-menu:before                { content: '\E08e'}
+	.lsf-icon-tilemenu:before                { content: '\E12a'}
+	.lsf-icon-list:before                { content: '\E084'}
+	.lsf-icon-tile:before                { content: '\E129'}
+	.lsf-icon-notify:before                { content: '\E097'}
+	.lsf-icon-table:before                { content: '\E127'}
+	.lsf-icon-copy:before                { content: '\E038'}
+	.lsf-icon-cut:before                { content: '\E03b'}
+	.lsf-icon-backspace:before                { content: '\E010'}
+	.lsf-icon-alignleft:before                { content: '\E005'}
+	.lsf-icon-aligncenter:before                { content: '\E004'}
+	.lsf-icon-alignright:before                { content: '\E006'}
+	.lsf-icon-alignadjust:before                { content: '\E003'}
+	.lsf-icon-italic:before                { content: '\E079'}
+	.lsf-icon-bold:before                { content: '\E01f'}
+	.lsf-icon-underline:before                { content: '\E132'}
+	.lsf-icon-strike:before                { content: '\E159'}
+	.lsf-icon-emphasis:before                { content: '\E152'}
+	.lsf-icon-code:before                { content: '\E032'}
+	.lsf-icon-link:before                { content: '\E082'}
+	.lsf-icon-quote:before                { content: '\E10b'}
+	.lsf-icon-graph:before                { content: '\E05b'}
+	.lsf-icon-magic:before                { content: '\E089'}
+	.lsf-icon-brush:before                { content: '\E022'}
+	.lsf-icon-color:before                { content: '\E033'}
+	.lsf-icon-contrast:before                { content: '\E001'}
+	.lsf-icon-ink:before                { content: '\E14a'}
+	.lsf-icon-gradation:before                { content: '\E149'}
+	.lsf-icon-sepia:before                { content: '\E14e'}
+	.lsf-icon-invert:before                { content: '\E14b'}
+	.lsf-icon-paint:before                { content: '\E09b'}
+	.lsf-icon-paramater:before                { content: '\E09c'}
+	.lsf-icon-crop:before                { content: '\E039'}
+	.lsf-icon-check:before                { content: '\E029'}
+	.lsf-icon-checkbox:before                { content: '\E02a'}
+	.lsf-icon-checkboxempty:before                { content: '\E02b'}
+	.lsf-icon-pc:before                { content: '\E09e'}
+	.lsf-icon-keyboard:before                { content: '\E07d'}
+	.lsf-icon-mobile:before                { content: '\E078'}
+	.lsf-icon-horizontal:before                { content: '\E071'}
+	.lsf-icon-vertical:before                { content: '\E138'}
+	.lsf-icon-web:before                { content: '\E13f'}
+	.lsf-icon-mail:before                { content: '\E08a'}
+	.lsf-icon-shopping:before                { content: '\E119'}
+	.lsf-icon-dashboard:before                { content: '\E03c'}
+	.lsf-icon-key:before                { content: '\E07c'}
+	.lsf-icon-sns:before                { content: '\E11f'}
+	.lsf-icon-calendar:before                { content: '\E15e'}
+	.lsf-icon-dailycalendar:before                { content: '\E025'}
+	.lsf-icon-ban:before                { content: '\E012'}
+	.lsf-icon-remove:before                { content: '\E10f'}
+	.lsf-icon-pen:before                { content: '\E09f'}
+	.lsf-icon-eraser:before                { content: '\E148'}
+	.lsf-icon-edit:before                { content: '\E041'}
+	.lsf-icon-tabs:before                { content: '\E095'}
+	.lsf-icon-tag:before                { content: '\E128'}
+	.lsf-icon-setup:before                { content: '\E117'}
+	.lsf-icon-setting:before                { content: '\E055'}
+	.lsf-icon-etc:before                { content: '\E043'}
+	.lsf-icon-clip:before                { content: '\E030'}
+	.lsf-icon-bookmark:before                { content: '\E021'}
+	.lsf-icon-book:before                { content: '\E020'}
+	.lsf-icon-album:before                { content: '\E002'}
+	.lsf-icon-user:before                { content: '\E137'}
+	.lsf-icon-friend:before                { content: '\E051'}
+	.lsf-icon-group:before                { content: '\E05c'}
+	.lsf-icon-frustrate:before                { content: '\E052'}
+	.lsf-icon-laugh:before                { content: '\E07f'}
+	.lsf-icon-wink:before                { content: '\E081'}
+	.lsf-icon-smile:before                { content: '\E11e'}
+	.lsf-icon-surprise:before                { content: '\E124'}
+	.lsf-icon-trouble:before                { content: '\E12d'}
+	.lsf-icon-male:before                { content: '\E176'}
+	.lsf-icon-female:before                { content: '\E175'}
+	.lsf-icon-game:before                { content: '\E054'}
+	.lsf-icon-globe:before                { content: '\E058'}
+	.lsf-icon-home:before                { content: '\E072'}
+	.lsf-icon-building:before                { content: '\E023'}
+	.lsf-icon-rss:before                { content: '\E113'}
+	.lsf-icon-server:before                { content: '\E16c'}
+	.lsf-icon-sitemap:before                { content: '\E16d'}
+	.lsf-icon-app:before                { content: '\E009'}
+	.lsf-icon-memo:before                { content: '\E08d'}
+	.lsf-icon-meal:before                { content: '\E08c'}
+	.lsf-icon-coffee:before                { content: '\E146'}
+	.lsf-icon-spa:before                { content: '\E177'}
+	.lsf-icon-college:before                { content: '\E174'}
+	.lsf-icon-bag:before                { content: '\E173'}
+	.lsf-icon-present:before                { content: '\E109'}
+	.lsf-icon-umbrella:before                { content: '\E178'}
+	.lsf-icon-twinkle:before                { content: '\E073'}
+	.lsf-icon-crown:before                { content: '\E03a'}
+	.lsf-icon-category:before                { content: '\E028'}
+	.lsf-icon-circle:before                { content: '\E02e'}
+	.lsf-icon-info:before                { content: '\E075'}
+	.lsf-icon-help:before                { content: '\E070'}
+	.lsf-icon-refreshbutton:before                { content: '\E14d'}
+	.lsf-icon-terminal:before                { content: '\E16e'}

@@ -1,0 +1,396 @@
+@model BenefitNetFlex.Sample.Models.ListViewModel
+@{
+    ViewBag.Title = "Sample List";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>@Model.Title</h5>
+                    <div class="ibox-tools">
+                        @if (Model.CanAdd)
+                        {
+                            <a href="@Url.Action("Create", "SampleForm")" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i> Add New
+                            </a>
+                        }
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <!-- Filter Section -->
+                    <div class="row m-b-md">
+                        <div class="col-sm-3">
+                            <input type="text" id="searchBox" class="form-control" placeholder="Search...">
+                        </div>
+                        <div class="col-sm-2">
+                            <select id="categoryFilter" class="form-control">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <select id="statusFilter" class="form-control">
+                                <option value="">All Statuses</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                                <option value="Pending">Pending</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <button id="btnSearch" class="btn btn-primary">
+                                <i class="fa fa-search"></i> Search
+                            </button>
+                            <button id="btnReset" class="btn btn-default">
+                                <i class="fa fa-refresh"></i> Reset
+                            </button>
+                        </div>
+                        <div class="col-sm-3 text-right">
+                            @if (Model.CanExport)
+                            {
+                                <button id="btnExport" class="btn btn-success">
+                                    <i class="fa fa-download"></i> Export
+                                </button>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Data Table -->
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th width="50">
+                                        <input type="checkbox" id="selectAll" />
+                                    </th>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                    <th>Created Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <!-- Data will be loaded here via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="dataTables_info">
+                                Showing <span id="startRecord">0</span> to <span id="endRecord">0</span> of <span id="totalRecords">0</span> entries
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="dataTables_paginate paging_simple_numbers">
+                                <ul class="pagination" id="pagination">
+                                    <!-- Pagination will be generated here -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bulk Actions -->
+                    <div class="row m-t-md">
+                        <div class="col-sm-6">
+                            <div class="btn-group">
+                                <button id="btnBulkDelete" class="btn btn-danger btn-sm" disabled>
+                                    <i class="fa fa-trash"></i> Delete Selected
+                                </button>
+                                <button id="btnBulkActivate" class="btn btn-success btn-sm" disabled>
+                                    <i class="fa fa-check"></i> Activate Selected
+                                </button>
+                                <button id="btnBulkDeactivate" class="btn btn-warning btn-sm" disabled>
+                                    <i class="fa fa-times"></i> Deactivate Selected
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <span id="selectionCount">0 items selected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var currentPage = 1;
+        var pageSize = 10;
+        var totalRecords = 0;
+
+        $(document).ready(function() {
+            // Load initial data
+            loadData();
+
+            // Load filter options
+            loadFilterOptions();
+
+            // Search button
+            $("#btnSearch").click(function() {
+                applyFilters();
+            });
+
+            // Reset button
+            $("#btnReset").click(function() {
+                $("#searchBox").val("");
+                $("#categoryFilter").val("");
+                $("#statusFilter").val("");
+                applyFilters();
+            });
+
+            // Export button
+            $("#btnExport").click(function() {
+                exportData();
+            });
+
+            // Bulk action buttons
+            $("#btnBulkDelete").click(function() {
+                performBulkAction("delete");
+            });
+
+            $("#btnBulkActivate").click(function() {
+                performBulkAction("activate");
+            });
+
+            $("#btnBulkDeactivate").click(function() {
+                performBulkAction("deactivate");
+            });
+
+            // Enter key in search box
+            $("#searchBox").keypress(function(e) {
+                if (e.which == 13) {
+                    applyFilters();
+                }
+            });
+        });
+
+
+        function getStatusBadge(status) {
+            var badgeClass = "default";
+            switch(status) {
+                case "Active":
+                    badgeClass = "primary";
+                    break;
+                case "Inactive":
+                    badgeClass = "danger";
+                    break;
+                case "Pending":
+                    badgeClass = "warning";
+                    break;
+            }
+            return '<span class="label label-' + badgeClass + '">' + status + '</span>';
+        }
+
+        function applyFilters() {
+            currentPage = 1;
+            loadData();
+        }
+
+        function loadData() {
+            var filters = {
+                SearchTerm: $("#searchBox").val(),
+                Category: $("#categoryFilter").val(),
+                Status: $("#statusFilter").val(),
+                Page: currentPage,
+                PageSize: pageSize
+            };
+
+            $.post('@Url.Action("GetGridData", "SampleList")', filters, function(response) {
+                if (response.Data && response.Data.length > 0) {
+                    renderTable(response.Data);
+                    totalRecords = response.Total || response.Data.length;
+                    updatePagination();
+                } else {
+                    $("#tableBody").html('<tr><td colspan="8" class="text-center">No data available</td></tr>');
+                    totalRecords = 0;
+                    updatePagination();
+                }
+            });
+        }
+
+        function renderTable(data) {
+            var html = '';
+            $.each(data, function(i, item) {
+                html += '<tr>';
+                html += '<td><input type="checkbox" class="row-checkbox" value="' + item.Id + '" /></td>';
+                html += '<td>' + item.Id + '</td>';
+                html += '<td>' + item.Name + '</td>';
+                html += '<td>' + item.Category + '</td>';
+                html += '<td>' + getStatusBadge(item.Status) + '</td>';
+                html += '<td>$' + (item.Amount || 0).toFixed(2) + '</td>';
+                html += '<td>' + formatDate(item.CreatedDate) + '</td>';
+                html += '<td>';
+                html += '<button class="btn btn-xs btn-info" onclick="viewDetails(' + item.Id + ')">View</button> ';
+                @if (Model.CanEdit) {
+                    @:html += '<button class="btn btn-xs btn-warning" onclick="editRecord(' + item.Id + ')">Edit</button> ';
+                }
+                @if (Model.CanDelete) {
+                    @:html += '<button class="btn btn-xs btn-danger" onclick="deleteRecord(' + item.Id + ')">Delete</button>';
+                }
+                html += '</td>';
+                html += '</tr>';
+            });
+            $("#tableBody").html(html);
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            var date = new Date(dateString);
+            return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+        }
+
+        function updatePagination() {
+            var totalPages = Math.ceil(totalRecords / pageSize);
+            var startRecord = (currentPage - 1) * pageSize + 1;
+            var endRecord = Math.min(currentPage * pageSize, totalRecords);
+
+            $("#startRecord").text(startRecord);
+            $("#endRecord").text(endRecord);
+            $("#totalRecords").text(totalRecords);
+
+            var paginationHtml = '';
+            if (currentPage > 1) {
+                paginationHtml += '<li><a href="#" onclick="goToPage(' + (currentPage - 1) + ')">Previous</a></li>';
+            }
+            for (var i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    paginationHtml += '<li class="active"><a href="#">' + i + '</a></li>';
+                } else {
+                    paginationHtml += '<li><a href="#" onclick="goToPage(' + i + ')">' + i + '</a></li>';
+                }
+            }
+            if (currentPage < totalPages) {
+                paginationHtml += '<li><a href="#" onclick="goToPage(' + (currentPage + 1) + ')">Next</a></li>';
+            }
+            $("#pagination").html(paginationHtml);
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            loadData();
+        }
+
+        function loadFilterOptions() {
+            $.get('@Url.Action("GetFilterOptions", "SampleList")', function(response) {
+                if (response.success) {
+                    // Populate category dropdown
+                    var categorySelect = $("#categoryFilter");
+                    $.each(response.data.Categories, function(i, category) {
+                        categorySelect.append($('<option></option>').val(category).text(category));
+                    });
+                }
+            });
+        }
+
+        function viewDetails(id) {
+            window.location.href = '@Url.Action("Details", "SampleDetail")/' + id;
+        }
+
+        function editRecord(id) {
+            window.location.href = '@Url.Action("Edit", "SampleForm")/' + id;
+        }
+
+        function deleteRecord(id) {
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this record!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: false
+            }, function() {
+                $.post('@Url.Action("Delete", "SampleList")', { id: id }, function(response) {
+                    if (response.success) {
+                        swal("Deleted!", "The record has been deleted.", "success");
+                        loadData();
+                    } else {
+                        swal("Error!", response.message, "error");
+                    }
+                });
+            });
+        }
+
+        function performBulkAction(action) {
+            var selectedIds = getSelectedIds();
+
+            if (selectedIds.length == 0) {
+                swal("No Selection", "Please select items first", "warning");
+                return;
+            }
+
+            var confirmMessage = "Are you sure you want to " + action + " " + selectedIds.length + " items?";
+
+            swal({
+                title: "Confirm Action",
+                text: confirmMessage,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, proceed!"
+            }, function() {
+                $.post('@Url.Action("BulkAction", "SampleList")', {
+                    action: action,
+                    selectedIds: selectedIds
+                }, function(response) {
+                    if (response.success) {
+                        swal("Success!", response.message, "success");
+                        grid.dataSource.read();
+                    } else {
+                        swal("Error!", response.message, "error");
+                    }
+                });
+            });
+        }
+
+        function getSelectedIds() {
+            var ids = [];
+            $(".row-checkbox:checked").each(function() {
+                ids.push($(this).val());
+            });
+            return ids;
+        }
+
+        function updateSelectionCount() {
+            var count = $(".row-checkbox:checked").length;
+            $("#selectionCount").text(count + " items selected");
+
+            // Enable/disable bulk action buttons
+            var hasSelection = count > 0;
+            $("#btnBulkDelete, #btnBulkActivate, #btnBulkDeactivate").prop("disabled", !hasSelection);
+        }
+
+        function exportData() {
+            var filters = {
+                searchTerm: $("#searchBox").val(),
+                category: $("#categoryFilter").val(),
+                status: $("#statusFilter").val()
+            };
+
+            $.post('@Url.Action("ExportToExcel", "SampleList")', filters, function(response) {
+                if (response.success) {
+                    swal("Export Complete", response.message, "success");
+                } else {
+                    swal("Export Failed", response.message, "error");
+                }
+            });
+        }
+
+        // Update selection count when rows are selected/deselected
+        $(document).on("change", ".row-checkbox", function() {
+            updateSelectionCount();
+        });
+
+        // Select all checkbox handler
+        $(document).on("change", "#selectAll", function() {
+            $(".row-checkbox").prop("checked", $(this).prop("checked"));
+            updateSelectionCount();
+        });
+    </script>
+}
